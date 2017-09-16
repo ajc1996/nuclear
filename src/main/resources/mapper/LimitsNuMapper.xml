@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="nuclear.dao.LimitsNuMapper" >
+  <resultMap id="BaseResultMap" type="nuclear.model.LimitsNu" >
+    <constructor >
+      <idArg column="lid" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="luid" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="lsid" jdbcType="INTEGER" javaType="java.lang.Integer" />
+    </constructor>
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    lid, luid, lsid
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="nuclear.model.LimitsNuExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from n_limits
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limit != null" >
+      <if test="offset != null" >
+        limit ${offset}, ${limit}
+      </if>
+      <if test="offset == null" >
+        limit ${limit}
+      </if>
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from n_limits
+    where lid = #{lid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from n_limits
+    where lid = #{lid,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="nuclear.model.LimitsNuExample" >
+    delete from n_limits
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="nuclear.model.LimitsNu" >
+    insert into n_limits (lid, luid, lsid
+      )
+    values (#{lid,jdbcType=VARCHAR}, #{luid,jdbcType=INTEGER}, #{lsid,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="nuclear.model.LimitsNu" >
+    insert into n_limits
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="lid != null" >
+        lid,
+      </if>
+      <if test="luid != null" >
+        luid,
+      </if>
+      <if test="lsid != null" >
+        lsid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="lid != null" >
+        #{lid,jdbcType=VARCHAR},
+      </if>
+      <if test="luid != null" >
+        #{luid,jdbcType=INTEGER},
+      </if>
+      <if test="lsid != null" >
+        #{lsid,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="nuclear.model.LimitsNuExample" resultType="java.lang.Integer" >
+    select count(*) from n_limits
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update n_limits
+    <set >
+      <if test="record.lid != null" >
+        lid = #{record.lid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.luid != null" >
+        luid = #{record.luid,jdbcType=INTEGER},
+      </if>
+      <if test="record.lsid != null" >
+        lsid = #{record.lsid,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update n_limits
+    set lid = #{record.lid,jdbcType=VARCHAR},
+      luid = #{record.luid,jdbcType=INTEGER},
+      lsid = #{record.lsid,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="nuclear.model.LimitsNu" >
+    update n_limits
+    <set >
+      <if test="luid != null" >
+        luid = #{luid,jdbcType=INTEGER},
+      </if>
+      <if test="lsid != null" >
+        lsid = #{lsid,jdbcType=INTEGER},
+      </if>
+    </set>
+    where lid = #{lid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="nuclear.model.LimitsNu" >
+    update n_limits
+    set luid = #{luid,jdbcType=INTEGER},
+      lsid = #{lsid,jdbcType=INTEGER}
+    where lid = #{lid,jdbcType=VARCHAR}
+  </update>
+</mapper>
