@@ -85,7 +85,7 @@
                                 <a href="index_v5.html" target="_blank">主页示例五</a>
                             </li>
                             <li>
-                                <a class="J_menuItem" href="/view/NuManage.jsp">管理二级管理员</a>
+                                <a class="J_menuItem" href="view/NuManage.jsp">管理二级管理员</a>
                             </li>
                         </ul>
 
