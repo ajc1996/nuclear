@@ -18,13 +18,44 @@ public class UserNuServiceImpl implements UserNuService {
     @Resource
     UserNuMapper userNuMapper;
 
+    /**
+     *
+     * @param userNu
+     * @return
+     */
+    @Override
+    public String useradd(UserNu userNu) {
+        int readd = userNuMapper.insert(userNu);
+        System.out.println(readd);
+        return null;
+    }
+
+    /**
+     * 判断用户名是否存在
+     * @param userNu
+     * @return
+     */
+    @Override
+    public Boolean judgecname(UserNu userNu) {
+        userNuExample.clear();
+        userNuExample.createCriteria().andUnameEqualTo(userNu.getUname());
+        List<UserNu> userNus = userNuMapper.selectByExample(userNuExample);
+        Boolean judge = false;
+        if(0 == userNus.size()){
+            judge = true;
+        }else {
+            judge = false;
+        }
+        return judge;
+    }
+
+    /**
+     * 查询所有的用户数据
+     * @return
+     */
     @Override
     public List<UserNu> userquery() {
         List<UserNu> userNus = userNuMapper.selectByExample(null);
-        System.out.println(userNus.size());
-        for(int i=0;i<userNus.size();i++){
-            System.out.println(userNus.get(i).getUid());
-        }
         return userNus;
     }
 }
