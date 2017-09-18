@@ -7,12 +7,13 @@
 <html>
 <head>
     <base href="<%=basePath%>">
-    <!-- 先引用jquery -->
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <%-- 说明 --%>
+    <title>管理商品</title>
+    <meta name="description" content="使用bootstrap-table实现对所有商品的增加，删除，查询">
 
-    <title>管理二级管理员</title>
-    <meta name="description" content="使用bootstrap-table实现对所有管理员的增加，删除，查询">
-
+    <%-- css引用 --%>
     <link rel="shortcut icon" href="favicon.ico"> <link href="css/bootstrap.min14ed.css?v=3.3.6" rel="stylesheet">
     <link href="css/font-awesome.min93e3.css?v=4.4.0" rel="stylesheet">
     <link href="css/plugins/bootstrap-table/bootstrap-table.min.css" rel="stylesheet">
@@ -20,7 +21,13 @@
     <link href="css/style.min862f.css?v=4.1.0" rel="stylesheet">
     <link href="css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
     <link href="https://cdn.bootcss.com/bootstrap-validator/0.5.3/css/bootstrapValidator.min.css" rel="stylesheet">
-
+    <link href="head/cropper.min.css" rel="stylesheet">
+    <link href="head/sitelogo.css" rel="stylesheet">
+    <style type="text/css">
+        .avatar-btns button {
+            height: 35px;
+        }
+    </style>
 </head>
 <body class="gray-bg">
     <div class="wrapper wrapper-content animated fadeInRight">
@@ -54,22 +61,38 @@
                 <form id="form1" action="/useradd" method="post">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                        <h4 class="modal-title">添加用户</h4>
+                        <h4 class="modal-title">添加商品</h4>
                         <small class="font-bold" />
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
                             <div class="form-group">
-                                <label>用户名</label>
-                                <input type="text" placeholder="请输入用户名" class="form-control" name="uname">
+                                <label>商品名称</label>
+                                <input type="text" placeholder="请输入商品名称" class="form-control" name="gname">
                             </div>
                             <div class="form-group">
-                                <label>密码</label>
-                                <input type="password" placeholder="请输入密码" class="form-control" name="upassword">
+                                <label>商品单价</label>
+                                <input type="text" placeholder="请输入商品单价" class="form-control" name="gprice">
                             </div>
                             <div class="form-group">
-                                <label>确认密码</label>
-                                <input type="password" placeholder="请再一次输入密码" class="form-control" name="upassword1">
+                                <label>商品库存</label>
+                                <input type="text" placeholder="请输入库存数量" class="form-control" name="gintro">
+                            </div>
+                            <div class="form-group">
+                                <label>上传展示</label>
+                                <img src="">
+                                <button type="button" class="btn btn-primary"  data-toggle="modal" data-target="#avatar-modal" style="margin: 10px;">
+                                    修改头像
+                                </button>
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="avatar-wrapper preview-lg" id="imgreal"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>商品简介</label>
+                                <textarea id="ccomment" name="grepertory" class="form-control" required="" aria-required="true" placeholder="请输入商品简介(不多于50字)"></textarea>
                             </div>
                         </div>
                     </div>
@@ -83,7 +106,77 @@
     </div>
     <%--modal 添加结束--%>
 
-    <script src="js/jquery.min.js?v=2.1.4"></script>
+    <%-- 裁剪图片modal开始 --%>
+    <div class="modal fade" id="avatar-modal" aria-hidden="true" aria-labelledby="avatar-modal-label" role="dialog" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <!--<form class="avatar-form" action="upload-logo.php" enctype="multipart/form-data" method="post">-->
+                <form class="avatar-form">
+                    <div class="modal-header">
+                        <button class="close" data-dismiss="modal" type="button">&times;</button>
+                        <h4 class="modal-title" id="avatar-modal-label">上传图片</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="avatar-body">
+                            <div class="avatar-upload">
+                                <input class="avatar-src" name="avatar_src" type="hidden">
+                                <input class="avatar-data" name="avatar_data" type="hidden">
+                                <label for="avatarInput" style="line-height: 35px;">图片上传</label>
+                                <button class="btn btn-danger"  type="button" style="height: 35px;" onclick="$('input[id=avatarInput]').click();">请选择图片</button>
+                                <span id="avatar-name"></span>
+                                <input class="avatar-input hide" id="avatarInput" name="avatar_file" type="file">
+                            </div>
+                            <div class="row">
+                                <div class="col-md-9">
+                                    <div class="avatar-wrapper"></div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="avatar-preview preview-lg" id="imageHead"></div>
+                                </div>
+                            </div>
+                            <div class="row avatar-btns">
+                                <div class="col-md-4">
+                                    <div class="btn-group">
+                                        <button class="btn btn-danger fa fa-undo" data-method="rotate" data-option="-90" type="button" title="Rotate -90 degrees"> 向左旋转</button>
+                                    </div>
+                                    <div class="btn-group">
+                                        <button class="btn  btn-danger fa fa-repeat" data-method="rotate" data-option="90" type="button" title="Rotate 90 degrees"> 向右旋转</button>
+                                    </div>
+                                </div>
+                                <div class="col-md-5" style="text-align: right;">
+                                    <button class="btn btn-danger fa fa-arrows" data-method="setDragMode" data-option="move" type="button" title="移动">
+                                            <span class="docs-tooltip" data-toggle="tooltip" title="" data-original-title="$().cropper(&quot;setDragMode&quot;, &quot;move&quot;)">
+                                            </span>
+                                    </button>
+                                    <button type="button" class="btn btn-danger fa fa-search-plus" data-method="zoom" data-option="0.1" title="放大图片">
+                                            <span class="docs-tooltip" data-toggle="tooltip" title="" data-original-title="$().cropper(&quot;zoom&quot;, 0.1)">
+                                              <!--<span class="fa fa-search-plus"></span>-->
+                                            </span>
+                                    </button>
+                                    <button type="button" class="btn btn-danger fa fa-search-minus" data-method="zoom" data-option="-0.1" title="缩小图片">
+                                            <span class="docs-tooltip" data-toggle="tooltip" title="" data-original-title="$().cropper(&quot;zoom&quot;, -0.1)">
+                                              <!--<span class="fa fa-search-minus"></span>-->
+                                            </span>
+                                    </button>
+                                    <button type="button" class="btn btn-danger fa fa-refresh" data-method="reset" title="重置图片">
+                                                <span class="docs-tooltip" data-toggle="tooltip" title="" data-original-title="$().cropper(&quot;reset&quot;)" aria-describedby="tooltip866214">
+                                                </span>
+                                    </button>
+                                </div>
+                                <div class="col-md-3">
+                                    <button class="btn btn-danger btn-block avatar-save fa fa-save" type="button" data-dismiss="modal"> 保存修改</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <%-- 裁剪图片modal结束 --%>
+
+    <%--<script src="js/jquery.min.js?v=2.1.4"></script>--%>
+    <script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
     <script src="js/bootstrap.min.js?v=3.3.6"></script>
     <script src="js/content.min.js?v=1.0.0"></script>
     <script src="js/plugins/bootstrap-table/bootstrap-table.min.js"></script>
@@ -94,9 +187,80 @@
     <script src="https://cdn.bootcss.com/bootstrap-validator/0.5.3/js/language/zh_CN.js"></script>
     <script src="js/plugins/sweetalert/sweetalert.min.js"></script>
     <script src="https://cdn.bootcss.com/jquery.form/4.2.1/jquery.form.js"></script>
+    <script src="head/cropper.js"></script>
+    <script src="head/sitelogo.js"></script>
+    <script src="head/html2canvas.min.js" type="text/javascript" charset="utf-8"></script>
     <%--<script src="js/demo/bootstrap-table-demo.min.js"></script>--%>
     <%--<script type="text/javascript" src="http://tajs.qq.com/stats?sId=9051096" charset="UTF-8"></script>--%>
 </body>
+<!-- 图片上传的js -->
+<script type="text/javascript">
+    //做个下简易的验证  大小 格式
+    $('#avatarInput').on('change', function(e) {
+        var filemaxsize = 1024 * 5;//5M
+        var target = $(e.target);
+        var Size = target[0].files[0].size / 1024;
+        if(Size > filemaxsize) {
+            alert('图片过大，请重新选择!');
+            $(".avatar-wrapper").childre().remove;
+            return false;
+        }
+        if(!this.files[0].type.match(/image.*/)) {
+            alert('请选择正确的图片!')
+        } else {
+            var filename = document.querySelector("#avatar-name");
+            var texts = document.querySelector("#avatarInput").value;
+            var teststr = texts; //你这里的路径写错了
+            testend = teststr.match(/[^\\]+\.[^\(]+/i); //直接完整文件名的
+            filename.innerHTML = testend;
+        }
+
+    });
+
+    $(".avatar-save").on("click", function() {
+        var img_lg = document.getElementById('imageHead');
+        alert("2");
+        // 截图小的显示框内的内容
+        html2canvas(img_lg, {
+            allowTaint: true,
+            taintTest: false,
+            onrendered: function(canvas) {
+                alert("3");
+                canvas.id = "mycanvas";
+                //生成base64图片数据
+                var dataUrl = canvas.toDataURL("image/jpeg");
+                var newImg = document.createElement("img");
+                newImg.src = dataUrl;
+                alert(dataUrl);
+                imagesAjax(dataUrl)
+            }
+        });
+    });
+
+    function imagesAjax(src) {
+        alert("5");
+        var data = {};
+        data.img = src;
+        alert(src);
+        data.jid = $('#jid').val();
+        $.ajax({
+            url: "updateUserMess",
+            data: data,
+            type: "POST",
+            dataType: 'json',
+            success: function(re) {
+                alert("1");
+                alert(re.toString());
+            },
+            error: function (re) {
+                alert("2");
+                alert(re);
+                $("#imgreal").append("<img src='"+"' id='logo1' class='img-responsive center-block'/>");
+
+            }
+        });
+    }
+</script>
 <script type="text/javascript">
     $(function () {
         alert("1");
@@ -184,14 +348,14 @@
             }
         });
     });
-//    $("#btnadd").click(function(){
-//        swal({
-//            title:"太帅了",
-//            text:"小手一抖就打开了一个框",
-//            type:"success"
-//        })
-//        $("#btnclose").click();
-//    });
+    //    $("#btnadd").click(function(){
+    //        swal({
+    //            title:"太帅了",
+    //            text:"小手一抖就打开了一个框",
+    //            type:"success"
+    //        })
+    //        $("#btnclose").click();
+    //    });
 
 
     var TableInit = function () {
@@ -270,4 +434,5 @@
         return oInit;
     };
 </script>
+
 </html>

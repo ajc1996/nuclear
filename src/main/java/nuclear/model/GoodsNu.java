@@ -1,5 +1,7 @@
 package nuclear.model;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.util.Date;
 
 public class GoodsNu {
@@ -15,6 +17,7 @@ public class GoodsNu {
 
     private Integer grepertory;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date gbirthday;
 
     public GoodsNu(Integer gid, String gname, Double gprice, String gintro, String gpic, Integer grepertory, Date gbirthday) {

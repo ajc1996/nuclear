@@ -17,6 +17,11 @@ public class UserNuController {
     @Resource
     UserNuService userNuService;
 
+    /**
+     * 查询所有用户信息
+     * @param userNu
+     * @return
+     */
     @RequestMapping("/userquery")
     public @ResponseBody Object userquery(UserNu userNu){
         System.out.println("1");
@@ -24,6 +29,11 @@ public class UserNuController {
         return userNus;
     }
 
+    /**
+     * 验证用户名是否存在
+     * @param userNu
+     * @return
+     */
     @RequestMapping("/checkExist")
     @ResponseBody
     public Map checkExist(UserNu userNu){
@@ -33,6 +43,11 @@ public class UserNuController {
         return map;
     }
 
+    /**
+     * 添加管理员
+     * @param userNu
+     * @return
+     */
     @RequestMapping("/useradd")
     @ResponseBody
     public String useradd(UserNu userNu){
