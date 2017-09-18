@@ -85,7 +85,7 @@
                                 <a class="J_menuItem" href="/view/NuGoods.jsp">管理商品</a>
                             </li>
                             <li>
-                                <a class="J_menuItem" href="/view/NuManage.jsp">管理二级管理员</a>
+                                <a class="J_menuItem" href="view/NuManage.jsp">管理二级管理员</a>
                             </li>
                         </ul>
 
