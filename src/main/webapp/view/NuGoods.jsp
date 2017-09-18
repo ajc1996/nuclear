@@ -35,7 +35,6 @@
             <div class="col-sm-12">
                 <!-- Example Events -->
                 <div class="example-wrap">
-                    <h4 class="example-title">事件</h4>
                     <div class="example">
                         <div class="btn-group hidden-xs" id="exampleTableEventsToolbar" role="group">
                             <button type="button" class="btn btn-outline btn-default" id="NuManageadd" data-toggle="modal" data-target="#myModal2">
@@ -55,7 +54,7 @@
     </div>
 
     <%--modal 添加开始--%>
-    <div class="modal inmodal" id="myModal2" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal inmodal" id="myModal2" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;overflow:scroll">
         <div class="modal-dialog">
             <div class="modal-content animated flipInY">
                 <form id="form1" action="/useradd" method="post">
@@ -85,8 +84,10 @@
                                     修改头像
                                 </button>
                                 <div class="row">
-                                    <div class="col-md-3">
-                                        <div class="avatar-wrapper preview-lg" id="imgreal"></div>
+                                    <div class="col-md-3" id="imgpath1">
+                                        <div class="avatar-wrapper preview-lg" id="imgreal1">
+                                            <img src="imgs/1505721192560.jpg" id='imgreal' class='img-responsive center-block'/>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -107,13 +108,13 @@
     <%--modal 添加结束--%>
 
     <%-- 裁剪图片modal开始 --%>
-    <div class="modal fade" id="avatar-modal" aria-hidden="true" aria-labelledby="avatar-modal-label" role="dialog" tabindex="-1">
+    <div class="modal fade" id="avatar-modal" aria-hidden="true" aria-labelledby="avatar-modal-label" role="dialog" tabindex="-1" style="display: none;overflow:scroll">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <!--<form class="avatar-form" action="upload-logo.php" enctype="multipart/form-data" method="post">-->
                 <form class="avatar-form">
                     <div class="modal-header">
-                        <button class="close" data-dismiss="modal" type="button">&times;</button>
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                         <h4 class="modal-title" id="avatar-modal-label">上传图片</h4>
                     </div>
                     <div class="modal-body">
@@ -175,8 +176,9 @@
     </div>
     <%-- 裁剪图片modal结束 --%>
 
-    <%--<script src="js/jquery.min.js?v=2.1.4"></script>--%>
-    <script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+
+    <script src="js/jquery.min.js?v=2.1.4"></script>
+    <%--<script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>--%>
     <script src="js/bootstrap.min.js?v=3.3.6"></script>
     <script src="js/content.min.js?v=1.0.0"></script>
     <script src="js/plugins/bootstrap-table/bootstrap-table.min.js"></script>
@@ -219,13 +221,11 @@
 
     $(".avatar-save").on("click", function() {
         var img_lg = document.getElementById('imageHead');
-        alert("2");
         // 截图小的显示框内的内容
         html2canvas(img_lg, {
             allowTaint: true,
             taintTest: false,
             onrendered: function(canvas) {
-                alert("3");
                 canvas.id = "mycanvas";
                 //生成base64图片数据
                 var dataUrl = canvas.toDataURL("image/jpeg");
@@ -238,7 +238,6 @@
     });
 
     function imagesAjax(src) {
-        alert("5");
         var data = {};
         data.img = src;
         alert(src);
@@ -247,27 +246,21 @@
             url: "updateUserMess",
             data: data,
             type: "POST",
-            dataType: 'json',
+            dataType: 'text',
             success: function(re) {
-                alert("1");
-                alert(re.toString());
+                var imgpath = re.toString();
+                $("#imgreal").attr("src", imgpath);
             },
             error: function (re) {
-                alert("2");
-                alert(re);
-                $("#imgreal").append("<img src='"+"' id='logo1' class='img-responsive center-block'/>");
-
             }
         });
     }
 </script>
 <script type="text/javascript">
     $(function () {
-        alert("1");
         //1.初始化Table
         var oTable = new TableInit();
         oTable.Init();
-        alert("2");
         //2.初始化Button的点击事件
         var oButtonInit = new ButtonInit();
         oButtonInit.Init();
@@ -333,9 +326,7 @@
 
     $(function () {
         $("#form1").ajaxForm(function (data) {
-            alert("2");
             if(-1 < data.indexOf("success")){
-                alert("1");
                 swal({
                     title:"太帅了",
                     text:"小手一抖就打开了一个框",
@@ -360,7 +351,6 @@
 
     var TableInit = function () {
         var oTableInit = new Object();
-        alert("3");
         //初始化Table
         oTableInit.Init = function () {
             $('#exampleTableEvents').bootstrapTable({
