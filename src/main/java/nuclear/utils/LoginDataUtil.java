@@ -5,13 +5,13 @@ import java.util.Map;
 
 public class LoginDataUtil {
 
-    private static Map<String, String> sessionIDMap = new HashMap<String, String>();
+    private static Map<Integer, String> sessionIDMap = new HashMap<Integer, String>();
 
-    public static Map<String, String> getSessionIDMap() {
+    public static Map<Integer, String> getSessionIDMap() {
         return sessionIDMap;
 }
 
-    public static void setSessionIDMap(Map<String, String> sessionIDMap) {
+    public static void setSessionIDMap(Map<Integer, String> sessionIDMap) {
         LoginDataUtil.sessionIDMap = sessionIDMap;
 }
 
