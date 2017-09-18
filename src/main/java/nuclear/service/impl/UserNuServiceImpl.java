@@ -60,6 +60,12 @@ public class UserNuServiceImpl implements UserNuService {
         return userNus;
     }
 
+    /**
+     * 判断登录是否成功
+     * @param userNu
+     * @param messageSender
+     * @return
+     */
     @Override
     public boolean login(UserNu userNu, MessageSender messageSender) {
         userNuExample.clear();
@@ -79,6 +85,11 @@ public class UserNuServiceImpl implements UserNuService {
         }
     }
 
+    /**
+     * 按姓名查找
+     * @param userNu
+     * @return
+     */
     @Override
     public UserNu findByUname(UserNu userNu) {
         userNuExample.clear();
@@ -86,6 +97,11 @@ public class UserNuServiceImpl implements UserNuService {
         return userNuMapper.selectByExample(userNuExample).get(0);
     }
 
+    /**
+     * 按ID查找
+     * @param id
+     * @return
+     */
     @Override
     public UserNu findById(int id) {
         return userNuMapper.selectByPrimaryKey(id);
