@@ -20,7 +20,7 @@ public class UserNuServiceImpl implements UserNuService {
     UserNuMapper userNuMapper;
 
     /**
-     *
+     * 添加管理员信息
      * @param userNu
      * @return
      */

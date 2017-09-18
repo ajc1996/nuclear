@@ -54,10 +54,10 @@
     </div>
 
     <%--modal 添加开始--%>
-    <div class="modal inmodal" id="myModal2" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;overflow:scroll">
+    <div class="modal inmodal" id="myModal2" tabindex="-1" role="dialog" aria-hidden="true" style="overflow:scroll">
         <div class="modal-dialog">
             <div class="modal-content animated flipInY">
-                <form id="form1" action="/useradd" method="post">
+                <form id="form1" action="/goodsadd" method="post">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                         <h4 class="modal-title">添加商品</h4>
@@ -71,11 +71,11 @@
                             </div>
                             <div class="form-group">
                                 <label>商品单价</label>
-                                <input type="text" placeholder="请输入商品单价" class="form-control" name="gprice">
+                                <input type="text" placeholder="请输入商品单价(元)" class="form-control" name="gprice">
                             </div>
                             <div class="form-group">
                                 <label>商品库存</label>
-                                <input type="text" placeholder="请输入库存数量" class="form-control" name="gintro">
+                                <input type="text" placeholder="请输入库存数量(件)" class="form-control" name="grepertory">
                             </div>
                             <div class="form-group">
                                 <label>上传展示</label>
@@ -86,14 +86,15 @@
                                 <div class="row">
                                     <div class="col-md-3" id="imgpath1">
                                         <div class="avatar-wrapper preview-lg" id="imgreal1">
-                                            <img src="imgs/1505721192560.jpg" id='imgreal' class='img-responsive center-block'/>
+                                            <img src="" id='imgreal' class='img-responsive center-block'/>
                                         </div>
                                     </div>
+                                    <input type="text" value="" name="gpic" id="gpic" style="display: none" />
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label>商品简介</label>
-                                <textarea id="ccomment" name="grepertory" class="form-control" required="" aria-required="true" placeholder="请输入商品简介(不多于50字)"></textarea>
+                                <textarea id="ccomment" name="gintro" class="form-control" aria-required="true" placeholder="请输入商品简介(不多于80字)"></textarea>
                             </div>
                         </div>
                     </div>
@@ -108,7 +109,7 @@
     <%--modal 添加结束--%>
 
     <%-- 裁剪图片modal开始 --%>
-    <div class="modal fade" id="avatar-modal" aria-hidden="true" aria-labelledby="avatar-modal-label" role="dialog" tabindex="-1" style="display: none;overflow:scroll">
+    <div class="modal fade" id="avatar-modal" aria-hidden="true" aria-labelledby="avatar-modal-label" role="dialog" tabindex="-1" style="overflow:scroll">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <!--<form class="avatar-form" action="upload-logo.php" enctype="multipart/form-data" method="post">-->
@@ -231,7 +232,6 @@
                 var dataUrl = canvas.toDataURL("image/jpeg");
                 var newImg = document.createElement("img");
                 newImg.src = dataUrl;
-                alert(dataUrl);
                 imagesAjax(dataUrl)
             }
         });
@@ -240,7 +240,6 @@
     function imagesAjax(src) {
         var data = {};
         data.img = src;
-        alert(src);
         data.jid = $('#jid').val();
         $.ajax({
             url: "updateUserMess",
@@ -250,6 +249,7 @@
             success: function(re) {
                 var imgpath = re.toString();
                 $("#imgreal").attr("src", imgpath);
+                $("#gpic").attr("value",imgpath);
             },
             error: function (re) {
             }
@@ -274,49 +274,58 @@
                 validating: 'glyphicon glyphicon-refresh'
             },
             fields: {
-                uname: {
-                    message: '账户名验证失败',
+                gname: {
+                    message: '商品名称验证失败',
                     validators: {
                         notEmpty: {
-                            message: '账户名不能为空'
-                        },
-                        stringLength: {
-                            min: 6,
-                            max: 18,
-                            message: '账户名长度必须在6到18位之间'
-                        },
-                        regexp: {
-                            regexp: /^[a-zA-Z0-9_]+$/,
-                            message: '账户名由字母、数字、下划线组成'
+                            message: '商品名称不能为空'
                         },
                         remote: {
-                            message: '该账户名以被注册',
-                            url: "checkExist",
+                            message: '该商品名称已被注册',
+                            url: "judgegoods",
                             type: 'post',
                             data: function (validator) {
                                 return {
-                                    maccont: $("#uname").val()
+                                    gname: $("#gname").val()
                                 };
                             },
                             delay: 1000
                         }
                     }
                 },
-                upassword: {
+                gprice: {
                     validators: {
                         notEmpty: {
-                            message: '密码不能为空'
+                            message: '单价不能为空'
+                        },
+                        regexp: {
+                            regexp: /^[Z0-9\.]+$/,
+                            message: '请填写正确的单价(例:12.5)'
                         }
                     }
                 },
-                upassword1: {
+                grepertory: {
                     validators: {
                         notEmpty: {
-                            message: '密码不能为空'
+                            message: '库存数量不能为空'
                         },
-                        identical: {
-                            field: 'upassword',
-                            message: '两次密码不一致'
+                        regexp: {
+                            regexp: /^[Z0-9]+$/,
+                            message: '请填写正确的单价(例:10)'
+                        },
+                        stringLength: {
+                            min: 0,
+                            max: 6,
+                            message: '库存过大(上限:999999)'
+                        }
+                    }
+                },
+                gintro: {
+                    validators: {
+                        stringLength: {
+                            min: 0,
+                            max: 80,
+                            message: '不能超过80字(包括标点)'
                         }
                     }
                 }
@@ -339,34 +348,33 @@
             }
         });
     });
-    //    $("#btnadd").click(function(){
-    //        swal({
-    //            title:"太帅了",
-    //            text:"小手一抖就打开了一个框",
-    //            type:"success"
-    //        })
-    //        $("#btnclose").click();
-    //    });
-
 
     var TableInit = function () {
         var oTableInit = new Object();
         //初始化Table
         oTableInit.Init = function () {
             $('#exampleTableEvents').bootstrapTable({
-                url: '/userquery',         //请求后台的URL（*）
+                url: '/selectByFy',         //请求后台的URL（*）
                 method: 'post',                      //请求方式（*）
                 toolbar: '#exampleTableEventsToolbar',                //工具按钮用哪个容器
+                contentType: "application/x-www-form-urlencoded",
                 striped: true,                      //是否显示行间隔色
                 cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
                 pagination: true,                   //是否显示分页（*）
                 sortable: false,                     //是否启用排序
                 sortOrder: "asc",                   //排序方式
-                queryParams: oTableInit.queryParams,//传递参数（*）
-                sidePagination: "client",           //分页方式：client客户端分页，server服务端分页（*）
+                queryParamsType:'',
+                queryParams: function queryParams(params) {
+                    var param = {
+                        pageNumber: params.pageNumber,
+                        pageSize: params.pageSize
+                    };
+                    return param;
+                },
+                sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
                 pageNumber:1,                       //初始化加载第一页，默认第一页
-                pageSize: 10,                       //每页的记录行数（*）
-                pageList: [10, 25, 50, 100],        //可供选择的每页的行数（*）
+                pageSize: 3,                       //每页的记录行数（*）
+                pageList: [2, 3, 4, 5],        //可供选择的每页的行数（*）
                 search: true,                       //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
                 strictSearch: true,
                 showColumns: true,                  //是否显示所有的列
@@ -381,38 +389,47 @@
                 columns: [{
                     checkbox: true
                 },{
-                    field: 'uname',
-                    title: '管理员帐号'
+                    field: 'gname',
+                    title: '商品名称'
                 }, {
-                    field: 'upic',
-                    title: '管理员头像'
+                    field: 'gprice',
+                    title: '商品单价(元)'
                 }, {
-                    field: 'usex',
-                    title: '管理员头像'
+                    field: 'grepertory',
+                    title: '商品库存(件)'
                 }, {
-                    field: 'ubirthday',
-                    title: '管理员头像'
-                }, {
-                    field: 'ulimits',
-                    title: '管理员头像'
-                }, {
-                    field: 'uphone',
-                    title: '管理员头像'
+                    field: 'gbirthday',
+                    title: '商品入库时间',
+                    sortable: true,
+                    formatter: function (value, row, index) {
+                        return getMyDate(value)
+                    }
                 }]
             });
-        };
-        //得到查询的参数
-        oTableInit.queryParams = function (params) {
-            var temp = {   //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
-                limit: params.limit,   //页面大小
-                offset: params.offset,  //页码
-                uname: $("#uname").val()
-            };
-            return temp;
         };
         return oTableInit;
     };
 
+    //修改——转换日期格式(时间戳转换为datetime格式)
+    function getMyDate(str){
+        var oDate = new Date(str),
+            oYear = oDate.getFullYear(),
+            oMonth = oDate.getMonth()+1,
+            oDay = oDate.getDate(),
+            oHour = oDate.getHours(),
+            oMinutes = oDate.getMinutes(),
+            oSeconds = oDate.getSeconds(),
+            oTime = oYear +'-'+ getzf(oMonth) +'-'+ getzf(oDay) +' '+ getzf(oHour) + ':' + getzf(oMinutes) +':'+getzf(oSeconds);//最后拼接时间
+        return oTime;
+    }
+
+    //补0操作
+    function getzf(num){
+        if(parseInt(num) < 10){
+            num = '0'+num;
+        }
+        return num;
+    }
 
     var ButtonInit = function () {
         var oInit = new Object();
@@ -422,7 +439,7 @@
             //初始化页面上面的按钮事件
         };
         return oInit;
-    };
+    }
 </script>
 
 </html>
