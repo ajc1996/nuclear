@@ -31,6 +31,19 @@
     <meta http-equiv="refresh" content="0;ie.html" />
     <![endif]-->
     <script>if(window.top !== window.self){ window.top.location = window.location;}</script>
+    <style>
+        #codeImage{
+            cursor:pointer;
+            position: relative;
+            bottom: 35px;
+            left: 80px;
+        }
+        #codetip{
+            position: relative;
+            bottom: 35px;
+            left: 90px;
+        }
+    </style>
 </head>
 <script>
     $(document).ready(function(){
@@ -50,6 +63,9 @@
             }
         });
     });
+    function changeCode(){
+        $('#codeImage').attr('src','login/authCode?abc='+Math.random());//链接后添加Math.random，确保每次产生新的验证码，避免缓存问题。
+    }
 </script>
 <body class="gray-bg">
 
@@ -68,6 +84,11 @@
                 </div>
                 <div class="form-group">
                     <input type="password" class="form-control" name="upassword" placeholder="密码" required="">
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" id="authCode" name="authCode" placeholder="验证码" style="width:50% ;" required="">
+                    <img type="image" src="login/authCode" id="codeImage" onclick="changeCode()" title="图片看不清？点击重新得到验证码" />
+                    <a id="codetip" onclick="changeCode()">换一张</a>
                 </div>
                 <div class="form-group">
                     <p id="tips">&nbsp;</p>
