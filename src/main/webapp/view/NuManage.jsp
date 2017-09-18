@@ -87,11 +87,9 @@
 </body>
 <script type="text/javascript">
     $(function () {
-        alert("1");
         //1.初始化Table
         var oTable = new TableInit();
         oTable.Init();
-        alert("2");
         //2.初始化Button的点击事件
         var oButtonInit = new ButtonInit();
         oButtonInit.Init();
@@ -103,7 +101,6 @@
 
     var TableInit = function () {
         var oTableInit = new Object();
-        alert("3");
         //初始化Table
         oTableInit.Init = function () {
             $('#exampleTableEvents').bootstrapTable({

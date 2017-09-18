@@ -3,6 +3,8 @@ package nuclear.controller;
 import nuclear.model.LoginMessage;
 import nuclear.model.UserNu;
 import nuclear.service.UserNuService;
+import nuclear.utils.LoginDataUtil;
+import org.apache.commons.codec.binary.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,7 +28,7 @@ public class LoginController {
     @Autowired
     private  LoginMessage loginMessage;
    @RequestMapping("/dologin")
-    public @ResponseBody LoginMessage dologin(UserNu userNu,HttpSession session,String authCode){
+    public @ResponseBody LoginMessage dologin(UserNu userNu,HttpSession session,String authCode,HttpServletRequest request){
        if(session.getAttribute("strCode").toString().equals(authCode)) {
            boolean flag = userNuService.login(userNu, (message) -> loginMessage.setMessage(message));
            loginMessage.setFlag(flag);
@@ -34,8 +36,16 @@ public class LoginController {
                return loginMessage;
            } else {
                UserNu userNutemp = userNuService.findByUname(userNu);
-               session.setAttribute("id", userNutemp.getUid());
+               int uid = userNutemp.getUid();
+               session.setAttribute("id", uid);
                session.setAttribute("ulimits", userNutemp.getUlimits());
+               String sessionID = request.getRequestedSessionId();
+               if (!LoginDataUtil.getSessionIDMap().containsKey(uid)) { //不存在，首次登陆，放入Map
+                   LoginDataUtil.getSessionIDMap().put(uid, sessionID);
+               }else if(LoginDataUtil.getSessionIDMap().containsKey(uid)&&!StringUtils.equals(sessionID, LoginDataUtil.getSessionIDMap().get(uid))){
+                   LoginDataUtil.getSessionIDMap().remove(uid);
+                   LoginDataUtil.getSessionIDMap().put(uid, sessionID);
+               }
                return loginMessage;
            }
        }else{
