@@ -1,6 +1,7 @@
 package nuclear.service.impl;
 
 import nuclear.dao.UserNuMapper;
+import nuclear.interfaces.MessageSender;
 import nuclear.model.UserNu;
 import nuclear.model.UserNuExample;
 import nuclear.service.UserNuService;
@@ -57,5 +58,36 @@ public class UserNuServiceImpl implements UserNuService {
     public List<UserNu> userquery() {
         List<UserNu> userNus = userNuMapper.selectByExample(null);
         return userNus;
+    }
+
+    @Override
+    public boolean login(UserNu userNu, MessageSender messageSender) {
+        userNuExample.clear();
+        userNuExample.createCriteria().andUnameEqualTo(userNu.getUname());
+        if (0== userNuMapper.countByExample(userNuExample)){
+            messageSender.sendMessage("账号不存在");
+            return false;
+        }else{
+            UserNu userNu1temp = userNuMapper.selectByExample(userNuExample).get(0);
+            if (userNu1temp.getUpassword().equals(userNu.getUpassword())){
+                messageSender.sendMessage("登录成功");
+                return true;
+            }else{
+                messageSender.sendMessage("密码错误");
+                return  false;
+            }
+        }
+    }
+
+    @Override
+    public UserNu findByUname(UserNu userNu) {
+        userNuExample.clear();
+        userNuExample.createCriteria().andUnameEqualTo(userNu.getUname());
+        return userNuMapper.selectByExample(userNuExample).get(0);
+    }
+
+    @Override
+    public UserNu findById(int id) {
+        return userNuMapper.selectByPrimaryKey(id);
     }
 }
