@@ -22,6 +22,9 @@
     <mvc:resources location="/fonts/" mapping="/font/**"/>
     <mvc:resources location="/img/" mapping="/img/**"/>
     <mvc:resources location="/js/" mapping="/js/**"/>
+    <mvc:resources location="/head/" mapping="/head/**"/>
+    <mvc:resources location="/images/" mapping="/images/**"/>
+    <mvc:resources location="/plugins/" mapping="/plugins/**"/>
     <mvc:interceptors>
         <mvc:interceptor>
             <mvc:mapping path="/**"/>
@@ -29,6 +32,9 @@
             <mvc:exclude-mapping path="/fonts/**"/>
             <mvc:exclude-mapping path="/img/**"/>
             <mvc:exclude-mapping path="/js/**"/>
+            <mvc:exclude-mapping path="/images/**"/>
+            <mvc:exclude-mapping path="/plugins/**"/>
+            <mvc:exclude-mapping path="/head/**"/>
         <bean class="nuclear.interceptors.SingleUserInterceptor"/>
         </mvc:interceptor>
     </mvc:interceptors>

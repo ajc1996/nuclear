@@ -20,6 +20,9 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Random;
 
+/**
+ *登录controller类
+ */
 @RequestMapping("/login")
 @Controller
 public class LoginController {
@@ -27,10 +30,19 @@ public class LoginController {
     private UserNuService userNuService;
     @Autowired
     private  LoginMessage loginMessage;
+
+    /**
+     * 登录校验
+     * @param userNu
+     * @param session
+     * @param authCode
+     * @param request
+     * @return
+     */
    @RequestMapping("/dologin")
     public @ResponseBody LoginMessage dologin(UserNu userNu,HttpSession session,String authCode,HttpServletRequest request){
-       if(session.getAttribute("strCode").toString().equals(authCode)) {
-           boolean flag = userNuService.login(userNu, (message) -> loginMessage.setMessage(message));
+       if(session.getAttribute("strCode").toString().equals(authCode)) {//如果验证码正确的话
+           boolean flag = userNuService.login(userNu, (message) -> loginMessage.setMessage(message));//接收service判断的登录是否成功
            loginMessage.setFlag(flag);
            if (false == flag) {
                return loginMessage;
@@ -54,6 +66,13 @@ public class LoginController {
            return loginMessage;
        }
     }
+
+    /**
+     * 跳转到主页
+     * @param session
+     * @param model
+     * @return
+     */
     @RequestMapping("/toindex")
     public String toindex(HttpSession session, Model model) {
         if (null == session.getAttribute("id")) {
@@ -65,6 +84,14 @@ public class LoginController {
             return "index";
         }
     }
+
+    /**
+     * 验证码生成方法
+     * @param request
+     * @param response
+     * @param session
+     * @throws IOException
+     */
     @RequestMapping("/authCode")
     public void getAuthCode(HttpServletRequest request, HttpServletResponse response, HttpSession session)
             throws IOException {

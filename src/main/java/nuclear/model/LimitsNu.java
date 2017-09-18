@@ -1,5 +1,8 @@
 package nuclear.model;
 
+import org.springframework.stereotype.Service;
+
+@Service
 public class LimitsNu {
     private String lid;
 
