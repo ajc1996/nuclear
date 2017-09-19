@@ -32,4 +32,11 @@ public interface UserNuService {
     UserNu findByUname(UserNu userNu);
   
     UserNu findById(int id);
+
+    /**
+     * 修改用户
+     * @param userNu
+     * @return
+     */
+    String usermodify(UserNu userNu);
 }

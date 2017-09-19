@@ -50,6 +50,8 @@ public class LoginController {
                UserNu userNutemp = userNuService.findByUname(userNu);
                int uid = userNutemp.getUid();
                session.setAttribute("id", uid);
+               session.setAttribute("name", userNutemp.getUname());
+               session.setAttribute("pic", userNutemp.getUpic());
                session.setAttribute("ulimits", userNutemp.getUlimits());
                String sessionID = request.getRequestedSessionId();
                if (!LoginDataUtil.getSessionIDMap().containsKey(uid)) { //不存在，首次登陆，放入Map

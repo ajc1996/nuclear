@@ -38,10 +38,10 @@
                 <ul class="nav" id="side-menu">
                     <li class="nav-header">
                         <div class="dropdown profile-element">
-                            <span><img alt="image" class="img-circle" src="img/profile_small.jpg" /></span>
+                            <span><img alt="image" class="img-circle" src="${pic}" style="width: 80px;height: 80px" /></span>
                             <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                                 <span class="clear">
-                               <span class="block m-t-xs"><strong class="font-bold">Beaut-zihan</strong></span>
+                                <span class="block m-t-xs"><strong class="font-bold">${name}</strong></span>
                                 <span class="text-muted text-xs block">超级管理员<b class="caret"></b></span>
                                 </span>
                             </a>
@@ -52,10 +52,8 @@
                                 </li>
                                 <li><a class="J_menuItem" href="contacts.html">联系我们</a>
                                 </li>
-                                <li><a class="J_menuItem" href="mailbox.html">信箱</a>
-                                </li>
                                 <li class="divider"></li>
-                                <li><a href="login.html">安全退出</a>
+                                <li><a href="view/login.jsp">安全退出</a>
                                 </li>
                             </ul>
                         </div>
@@ -63,7 +61,7 @@
                         </div>
                     </li>
                     <li>
-                        <a class="J_menuItem" href="view/NuGoods.jsp">
+                        <a class="J_menuItem" href="view/NuIndex.jsp">
                             <i class="fa fa-home"></i>
                             <span class="nav-label">主页</span>
                         </a>
@@ -73,7 +71,7 @@
                         <ul class="nav nav-second-level">
                             <li><a class="J_menuItem" href="view/NuManage.jsp">管理管理员</a>
                             </li>
-                            <li><a class="J_menuItem" href="view/NuManage.jsp">管理用户</a>
+                            <li><a class="J_menuItem" href="view/NuUser.jsp">管理用户</a>
                             </li>
                         </ul>
                     </li>
@@ -81,9 +79,9 @@
                     <li>
                         <a href="#"><i class="fa fa-edit"></i> <span class="nav-label">个人信息</span><span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
-                            <li><a class="J_menuItem" href="form_basic.html">个人信息一览</a>
+                            <li><a class="J_menuItem" href="view/NuModify.jsp">个人信息一览</a>
                             </li>
-                            <li><a class="J_menuItem" href="form_basic.html">修改密码</a>
+                            <li><a class="J_menuItem" href="view/NuPassword.jsp">修改密码</a>
                             </li>
                         </ul>
                     </li>
@@ -91,7 +89,10 @@
                         <a class="J_menuItem" href="/view/NuGoods.jsp"><i class="fa fa-desktop"></i> <span class="nav-label">管理商品</span></a>
                     </li>
                     <li>
-                        <a href="#"><i class="fa fa-picture-o"></i> <span class="nav-label">相册</span><span class="fa arrow"></span></a>
+                        <a class="J_menuItem" href="/view/NuTrolley.jsp"><i class="fa fa-desktop"></i> <span class="nav-label">购物车</span></a>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fa fa-picture-o"></i> <span class="nav-label">购物车</span><span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li><a class="J_menuItem" href="basic_gallery.html">基本图库</a>
                             </li>
@@ -227,10 +228,10 @@
                         </li>
                     </ul>
                 </div>
-                <a href="login.html" class="roll-nav roll-right J_tabExit"><i class="fa fa fa-sign-out"></i> 退出</a>
+                <a href="view/login.jsp" class="roll-nav roll-right J_tabExit"><i class="fa fa fa-sign-out"></i> 退出</a>
             </div>
             <div class="row J_mainContent" id="content-main">
-                <iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="view/NuManage.jsp" frameborder="0" data-id="index_v1.html" seamless></iframe>
+                <iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="view/NuModify.jsp" frameborder="0" data-id="index_v1.html" seamless></iframe>
             </div>
             <div class="footer">
                 <div class="pull-right">&copy; 2014-2015 <a href="http://www.zi-han.net/" target="_blank">zihan's blog</a>

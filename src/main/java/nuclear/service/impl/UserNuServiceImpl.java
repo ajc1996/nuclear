@@ -106,4 +106,17 @@ public class UserNuServiceImpl implements UserNuService {
     public UserNu findById(int id) {
         return userNuMapper.selectByPrimaryKey(id);
     }
+
+    /**
+     * 修改用户信息
+     * @param userNu
+     * @return
+     */
+    @Override
+    public String usermodify(UserNu userNu) {
+        userNuExample.clear();
+        userNuExample.createCriteria().andUidEqualTo(userNu.getUid());
+        userNuMapper.updateByExampleSelective(userNu,userNuExample);
+        return "success";
+    }
 }

@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,5 +56,67 @@ public class UserNuController {
         System.out.println("2");
         return "success";
     }
+
+    /**
+     * 修改解除限制
+     * @return
+     */
+    @RequestMapping("/usermodify")
+    @ResponseBody
+    public String usermodify(){
+        System.out.println("1");
+        return "modify1";
+    }
+
+    /**
+     * 修改信息
+     * @return
+     */
+    @RequestMapping("/usermodify2")
+    @ResponseBody
+    public String usermodify2(UserNu userNu,HttpSession session){
+        System.out.println("增加");
+        userNu.setUid((int)session.getAttribute("id"));
+        userNuService.usermodify(userNu);
+        System.out.println("2");
+        return "modify2";
+    }
+
+    /**
+     * 验证用户名是否存在(不包括自己)
+     * @param userNu
+     * @return
+     */
+    @RequestMapping("/checkModify")
+    @ResponseBody
+    public Map checkModify(UserNu userNu,HttpSession session){
+        System.out.println("1");
+        session.getAttribute("name");
+        System.out.println(session.getAttribute("name"));
+        Map<String ,Boolean> map = new HashMap<String, Boolean>();
+        Boolean judge = false;
+        if(session.getAttribute("name").equals(userNu.getUname())){
+            judge = true;
+            map.put("valid",judge);
+        }else {
+            judge = userNuService.judgecname(userNu);
+            map.put("valid",judge);
+        }
+        return map;
+    }
+
+    @RequestMapping("/userFind")
+    @ResponseBody
+    public UserNu userFind(UserNu userNu,HttpSession session){
+        System.out.println("userFind");
+        int id = Integer.parseInt(session.getAttribute("id").toString());
+        userNu = userNuService.findById(id);
+        System.out.println(userNu.getUphone());
+        System.out.println("userFind1");
+        return userNu;
+    }
+
+
+
 
 }

@@ -1,5 +1,7 @@
 package nuclear.model;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.util.Date;
 
 public class UserNu {
@@ -13,6 +15,7 @@ public class UserNu {
 
     private String usex;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date ubirthday;
 
     private Integer ulimits;

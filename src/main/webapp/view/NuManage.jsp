@@ -182,15 +182,6 @@
             }
         });
     });
-//    $("#btnadd").click(function(){
-//        swal({
-//            title:"太帅了",
-//            text:"小手一抖就打开了一个框",
-//            type:"success"
-//        })
-//        $("#btnclose").click();
-//    });
-
 
     var TableInit = function () {
         var oTableInit = new Object();
@@ -227,20 +218,14 @@
                     field: 'uname',
                     title: '管理员帐号'
                 }, {
-                    field: 'upic',
-                    title: '管理员头像'
-                }, {
                     field: 'usex',
-                    title: '管理员头像'
+                    title: '性别'
                 }, {
                     field: 'ubirthday',
-                    title: '管理员头像'
-                }, {
-                    field: 'ulimits',
-                    title: '管理员头像'
+                    title: '生日'
                 }, {
                     field: 'uphone',
-                    title: '管理员头像'
+                    title: '联系电话'
                 }]
             });
         };
