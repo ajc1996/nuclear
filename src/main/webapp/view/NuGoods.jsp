@@ -361,7 +361,7 @@
                 striped: true,                      //是否显示行间隔色
                 cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
                 pagination: true,                   //是否显示分页（*）
-                sortable: false,                     //是否启用排序
+                sortable: true,                     //是否启用排序
                 sortOrder: "asc",                   //排序方式
                 queryParamsType:'',
                 queryParams: function queryParams(params) {
