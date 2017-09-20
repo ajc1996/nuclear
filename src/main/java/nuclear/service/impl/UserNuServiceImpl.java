@@ -8,7 +8,9 @@ import nuclear.service.UserNuService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service(value = "userNuService")
 public class UserNuServiceImpl implements UserNuService {
@@ -118,5 +120,49 @@ public class UserNuServiceImpl implements UserNuService {
         userNuExample.createCriteria().andUidEqualTo(userNu.getUid());
         userNuMapper.updateByExampleSelective(userNu,userNuExample);
         return "success";
+    }
+
+    /**
+     * 分页查询实现
+     * @param offset
+     * @param limit
+     * @return
+     */
+    @Override
+    public Map<String, Object> selectByUser(int offset, int limit) {
+        //清理Example将limit和offset放进去
+        userNuExample.clear();
+        userNuExample.createCriteria().andUlimitsEqualTo(3);
+        int total = userNuMapper.selectByExample(userNuExample).size();
+        userNuExample.setLimit(limit);
+        userNuExample.setOffset(offset);
+        //用map存放数据
+        Map<String,Object> result = new HashMap<String,Object>();
+        List<UserNu> rows =userNuMapper.selectByExample(userNuExample);
+        result.put("total",total);
+        result.put("rows",rows);
+        return result;
+    }
+
+    /**
+     * 管理员分页查询的实现
+     * @param offset
+     * @param limit
+     * @return
+     */
+    @Override
+    public Map<String, Object> selectByManage(int offset, int limit) {
+        //清理Example将limit和offset放进去
+        userNuExample.clear();
+        userNuExample.createCriteria().andUlimitsEqualTo(2);
+        int total = userNuMapper.selectByExample(userNuExample).size();
+        userNuExample.setLimit(limit);
+        userNuExample.setOffset(offset);
+        //用map存放数据
+        Map<String,Object> result = new HashMap<String,Object>();
+        List<UserNu> rows =userNuMapper.selectByExample(userNuExample);
+        result.put("total",total);
+        result.put("rows",rows);
+        return result;
     }
 }

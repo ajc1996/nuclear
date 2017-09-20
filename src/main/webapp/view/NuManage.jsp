@@ -188,16 +188,24 @@
         //初始化Table
         oTableInit.Init = function () {
             $('#exampleTableEvents').bootstrapTable({
-                url: '/userquery',         //请求后台的URL（*）
+                url: '/selectByManage',         //请求后台的URL（*）
                 method: 'post',                      //请求方式（*）
                 toolbar: '#exampleTableEventsToolbar',                //工具按钮用哪个容器
+                contentType: "application/x-www-form-urlencoded",
                 striped: true,                      //是否显示行间隔色
                 cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
                 pagination: true,                   //是否显示分页（*）
                 sortable: false,                     //是否启用排序
                 sortOrder: "asc",                   //排序方式
-                queryParams: oTableInit.queryParams,//传递参数（*）
-                sidePagination: "client",           //分页方式：client客户端分页，server服务端分页（*）
+                queryParamsType:'',
+                queryParams: function queryParams(params) {
+                    var param = {
+                        pageNumber: params.pageNumber,
+                        pageSize: params.pageSize
+                    };
+                    return param;
+                },
+                sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
                 pageNumber:1,                       //初始化加载第一页，默认第一页
                 pageSize: 10,                       //每页的记录行数（*）
                 pageList: [10, 25, 50, 100],        //可供选择的每页的行数（*）
@@ -219,28 +227,50 @@
                     title: '管理员帐号'
                 }, {
                     field: 'usex',
-                    title: '性别'
+                    title: '性别',
+                    formatter: function (value, row, index) {
+                        if(value == "M"){
+                            return "男";
+                        }else{
+                            return "女";
+                        }
+                    }
                 }, {
                     field: 'ubirthday',
-                    title: '生日'
+                    title: '生日',
+                    formatter: function (value, row, index) {
+                        if(value == null){
+                            return value;
+                        }else {
+                            return getMyDate(value)
+                        }
+                    }
                 }, {
                     field: 'uphone',
                     title: '联系电话'
                 }]
             });
         };
-        //得到查询的参数
-        oTableInit.queryParams = function (params) {
-            var temp = {   //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
-                limit: params.limit,   //页面大小
-                offset: params.offset,  //页码
-                uname: $("#uname").val()
-            };
-            return temp;
-        };
         return oTableInit;
     };
 
+    //修改——转换日期格式(时间戳转换为datetime格式)
+    function getMyDate(str){
+        var oDate = new Date(str),
+            oYear = oDate.getFullYear(),
+            oMonth = oDate.getMonth()+1,
+            oDay = oDate.getDate(),
+            oTime = oYear +'-'+ getzf(oMonth) +'-'+ getzf(oDay);//最后拼接时间
+        return oTime;
+    }
+
+    //补0操作
+    function getzf(num){
+        if(parseInt(num) < 10){
+            num = '0'+num;
+        }
+        return num;
+    }
 
     var ButtonInit = function () {
         var oInit = new Object();

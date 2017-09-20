@@ -104,7 +104,6 @@ public class GoodsNuController {
         /*所需参数*/
         int offset=(pageNumber-1)*pageSize;
         int limits=pageSize;
-
         return goodsNuService.selectByFy(offset,limits);
     }
 

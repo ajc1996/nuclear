@@ -89,7 +89,6 @@
     <script src="https://cdn.bootcss.com/jquery.form/4.2.1/jquery.form.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
-            alert("1");
             $('#modifypaw').bootstrapValidator({
                 message: 'This value is not valid',
                 feedbackIcons: {

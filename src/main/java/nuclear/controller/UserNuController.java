@@ -128,5 +128,37 @@ public class UserNuController {
         return "login";
     }
 
+    /**
+     * 用户的分页查询
+     * @param pageSize
+     * @param pageNumber
+     * @return
+     */
+    @RequestMapping("selectByUser")
+    @ResponseBody
+    public Map<String ,Object> selectByUser(int pageSize,int pageNumber){
+        System.out.println("user查询");
+        /* 所需参数 */
+        int offset=(pageNumber-1)*pageSize;
+        int limits=pageSize;
+        return userNuService.selectByUser(offset,limits);
+    }
+
+    /**
+     * 管理员的分页查询
+     * @param pageSize
+     * @param pageNumber
+     * @return
+     */
+    @RequestMapping("selectByManage")
+    @ResponseBody
+    public Map<String ,Object> selectByManage(int pageSize,int pageNumber){
+        System.out.println("user查询");
+        /* 所需参数 */
+        int offset=(pageNumber-1)*pageSize;
+        int limits=pageSize;
+        return userNuService.selectByManage(offset,limits);
+    }
+
 
 }
