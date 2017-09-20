@@ -1,6 +1,16 @@
 package nuclear.model;
 
 public class ControlNu {
+    @Override
+    public String toString() {
+        return "ControlNu{" +
+                "cid=" + cid +
+                ", cname='" + cname + '\'' +
+                ", curl='" + curl + '\'' +
+                ", cpic='" + cpic + '\'' +
+                '}';
+    }
+
     private Integer cid;
 
     private String cname;

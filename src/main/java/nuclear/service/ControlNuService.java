@@ -10,4 +10,9 @@ public interface ControlNuService {
     List<Integer> getLimits(int luid);
 
     List<ControlNu> getLimitsByIden(int luid);
+
+    /**
+     * 测试方法 用来加主键
+     */
+    void insert();
 }

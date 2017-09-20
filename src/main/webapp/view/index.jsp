@@ -1,4 +1,5 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
     String path = request.getContextPath();
     String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
@@ -42,7 +43,11 @@
                             <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                                 <span class="clear">
                                 <span class="block m-t-xs"><strong class="font-bold">${name}</strong></span>
-                                <span class="text-muted text-xs block">超级管理员<b class="caret"></b></span>
+                                <span class="text-muted text-xs block">
+                                    <c:if test="${ulimits==1}">超级管理员</c:if>
+                                     <c:if test="${ulimits==2}">普通管理员</c:if>
+                                     <c:if test="${ulimits==3}">用户</c:if>
+                                    <b class="caret"></b></span>
                                 </span>
                             </a>
                             <ul class="dropdown-menu animated fadeInRight m-t-xs">
@@ -60,30 +65,12 @@
                         <div class="logo-element">H+
                         </div>
                     </li>
-                    <li>
-                        <a class="J_menuItem" href="view/NuIndex.jsp">
-                            <i class="fa fa-home"></i>
-                            <span class="nav-label">主页</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="J_menuItem" href="view/NuManage.jsp"><i class="fa fa-columns"></i> <span class="nav-label">管理管理员</span></a>
-                    </li>
-                    <li>
-                        <a class="J_menuItem" href="view/NuUser.jsp"><i class="fa fa-columns"></i> <span class="nav-label">管理用户</span></a>
-                    </li>
-                    <li>
-                        <a class="J_menuItem" href="view/NuModify.jsp"><i class="fa fa-edit"></i> <span class="nav-label">个人信息</span></a>
-                    </li>
-                    <li>
-                        <a class="J_menuItem" href="view/NuPassword.jsp"><i class="fa fa-edit"></i> <span class="nav-label">修改密码</span></a>
-                    </li>
-                    <li>
-                        <a class="J_menuItem" href="/view/NuGoods.jsp"><i class="fa fa-desktop"></i> <span class="nav-label">管理商品</span></a>
-                    </li>
-                    <li>
-                        <a class="J_menuItem" href="/view/NuTrolley.jsp"><i class="fa fa-desktop"></i> <span class="nav-label">购物车</span></a>
-                    </li>
+                    <c:forEach items="${controlNuList}" var="controlNu">
+                        <li>
+                            <a class="J_menuItem" href="${controlNu.curl}"><i class="${controlNu.cpic}"></i><span class="nav-label">${controlNu.cname}</span></a>
+                        </li>
+                    </c:forEach>
+
                 </ul>
             </div>
         </nav>
