@@ -1,7 +1,9 @@
 package nuclear.controller;
 
+import nuclear.model.ControlNu;
 import nuclear.model.LoginMessage;
 import nuclear.model.UserNu;
+import nuclear.service.ControlNuService;
 import nuclear.service.UserNuService;
 import nuclear.utils.LoginDataUtil;
 import org.apache.commons.codec.binary.StringUtils;
@@ -19,6 +21,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Random;
+import java.util.List;
 
 /**
  *登录controller类
@@ -30,6 +33,8 @@ public class LoginController {
     private UserNuService userNuService;
     @Autowired
     private  LoginMessage loginMessage;
+    @Autowired
+    private ControlNuService controlNuService;
 
     /**
      * 登录校验
@@ -80,9 +85,9 @@ public class LoginController {
         if (null == session.getAttribute("id")) {
             return "login";
         } else {
-            int id = Integer.parseInt(session.getAttribute("id").toString());
-            String uname = userNuService.findById(id).getUname();
-            model.addAttribute("uname", uname);
+            int id = (int)session.getAttribute("ulimits");
+            List<ControlNu> controlNuList = controlNuService.getLimitsByIden(id);
+            model.addAttribute("controlNuList",controlNuList);
             return "index";
         }
     }

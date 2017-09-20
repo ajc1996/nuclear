@@ -63,4 +63,13 @@ public class ControlNuServiceImpl implements ControlNuService {
         }
         return  controlNusList;
     }
+
+    @Override
+    public void insert() {
+        int i = 15;
+        for (int i1 = 0; i1 < i; i1++) {
+            limitsNu.setLid(UUID.randomUUID().toString());
+            limitsNuMapper.insert(limitsNu);
+        }
+    }
 }
