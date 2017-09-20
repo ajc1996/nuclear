@@ -67,40 +67,22 @@
                         </a>
                     </li>
                     <li>
-                        <a href="#"><i class="fa fa-columns"></i> <span class="nav-label">管理</span><span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level">
-                            <li><a class="J_menuItem" href="view/NuManage.jsp">管理管理员</a>
-                            </li>
-                            <li><a class="J_menuItem" href="view/NuUser.jsp">管理用户</a>
-                            </li>
-                        </ul>
+                        <a class="J_menuItem" href="view/NuManage.jsp"><i class="fa fa-columns"></i> <span class="nav-label">管理管理员</span></a>
                     </li>
-
                     <li>
-                        <a href="#"><i class="fa fa-edit"></i> <span class="nav-label">个人信息</span><span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level">
-                            <li><a class="J_menuItem" href="view/NuModify.jsp">个人信息一览</a>
-                            </li>
-                            <li><a class="J_menuItem" href="view/NuPassword.jsp">修改密码</a>
-                            </li>
-                        </ul>
+                        <a class="J_menuItem" href="view/NuUser.jsp"><i class="fa fa-columns"></i> <span class="nav-label">管理用户</span></a>
+                    </li>
+                    <li>
+                        <a class="J_menuItem" href="view/NuModify.jsp"><i class="fa fa-edit"></i> <span class="nav-label">个人信息</span></a>
+                    </li>
+                    <li>
+                        <a class="J_menuItem" href="view/NuPassword.jsp"><i class="fa fa-edit"></i> <span class="nav-label">修改密码</span></a>
                     </li>
                     <li>
                         <a class="J_menuItem" href="/view/NuGoods.jsp"><i class="fa fa-desktop"></i> <span class="nav-label">管理商品</span></a>
                     </li>
                     <li>
                         <a class="J_menuItem" href="/view/NuTrolley.jsp"><i class="fa fa-desktop"></i> <span class="nav-label">购物车</span></a>
-                    </li>
-                    <li>
-                        <a href="#"><i class="fa fa-picture-o"></i> <span class="nav-label">购物车</span><span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level">
-                            <li><a class="J_menuItem" href="basic_gallery.html">基本图库</a>
-                            </li>
-                            <li><a class="J_menuItem" href="carousel.html">图片切换</a>
-                            </li>
-                            <li><a class="J_menuItem" href="blueimp.html">Blueimp相册</a>
-                            </li>
-                        </ul>
                     </li>
                 </ul>
             </div>
