@@ -26,17 +26,6 @@
     <link href="css/font-awesome.min93e3.css?v=4.4.0" rel="stylesheet">
     <link href="css/animate.min.css" rel="stylesheet">
     <link href="css/style.min862f.css?v=4.1.0" rel="stylesheet">
-    <link href="head/cropper.min.css" rel="stylesheet">
-    <link href="head/sitelogo.css" rel="stylesheet">
-    <style>
-        #circles1{
-            width: 80px;
-            height: 80px;
-            -moz-border-radius: 50px;
-            -webkit-border-radius: 50px;
-            border-radius: 50px;
-        }
-    </style>
 </head>
 
 <body class="fixed-sidebar full-height-layout gray-bg" style="overflow:hidden">
@@ -49,7 +38,7 @@
                 <ul class="nav" id="side-menu">
                     <li class="nav-header">
                         <div class="dropdown profile-element">
-                                <img class="img-circle" src="${pic}" style="height: 80px;width: 80px;border: 0px;" />
+                            <span><img alt="image" class="img-circle" src="${pic}" style="width: 80px;height: 80px" /></span>
                             <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                                 <span class="clear">
                                 <span class="block m-t-xs"><strong class="font-bold">${name}</strong></span>
@@ -59,7 +48,7 @@
                             <ul class="dropdown-menu animated fadeInRight m-t-xs">
                                 <li><a class="J_menuItem" href="form_avatar.html">修改头像</a>
                                 </li>
-                                <li><a class="J_menuItem" href="view/NuModify.jsp">个人资料</a>
+                                <li><a class="J_menuItem" href="profile.html">个人资料</a>
                                 </li>
                                 <li><a class="J_menuItem" href="contacts.html">联系我们</a>
                                 </li>
@@ -71,31 +60,12 @@
                         <div class="logo-element">H+
                         </div>
                     </li>
-                    <li>
-                        <a class="J_menuItem" href="view/NuIndex.jsp">
-                            <i class="fa fa-home"></i>
-                            <span class="nav-label">主页</span>
-                        </a>
-                    </li>
+                    <c:forEach items="${controlNuList}" var="controlNu">
+                        <li>
+                            <a class="J_menuItem" href="${controlNu.curl}"><i class="${controlNu.cpic}"></i><span class="nav-label">${controlNu.cname}</span></a>
+                        </li>
+                    </c:forEach>
 
-                    <li>
-                        <a class="J_menuItem" href="view/NuManage.jsp"><i class="fa fa-columns"></i> <span class="nav-label">管理管理员</span></a>
-                    </li>
-                    <li>
-                        <a class="J_menuItem" href="view/NuUser.jsp"><i class="fa fa-columns"></i> <span class="nav-label">管理用户</span></a>
-                    </li>
-                    <li>
-                        <a class="J_menuItem" href="view/NuModify.jsp"><i class="fa fa-edit"></i> <span class="nav-label">个人信息</span></a>
-                    </li>
-                    <li>
-                        <a class="J_menuItem" href="view/NuPassword.jsp"><i class="fa fa-edit"></i> <span class="nav-label">修改密码</span></a>
-                    </li>
-                    <li>
-                        <a class="J_menuItem" href="/view/NuGoods.jsp"><i class="fa fa-desktop"></i> <span class="nav-label">管理商品</span></a>
-                    </li>
-                    <li>
-                        <a class="J_menuItem" href="/view/NuTrolley.jsp"><i class="fa fa-desktop"></i> <span class="nav-label">购物车</span></a>
-                    </li>
                 </ul>
             </div>
         </nav>
@@ -650,9 +620,6 @@
     <script src="js/hplus.min.js?v=4.1.0"></script>
     <script type="text/javascript" src="js/contabs.min.js"></script>
     <script src="js/plugins/pace/pace.min.js"></script>
-    <script src="head/cropper.js"></script>
-    <script src="head/sitelogo.js"></script>
-    <script src="head/html2canvas.min.js" type="text/javascript" charset="utf-8"></script>
 </body>
 
 
