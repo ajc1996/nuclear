@@ -8,9 +8,8 @@ import java.util.List;
 
 public interface TrolleyNuService {
     List<TrolleyNu> allGoods(UserNu userNu);
-    float byAll(UserNu userNu);
-    boolean deleteOne(UserNu userNu,GoodsNu goodsNu);
-    boolean deleteAll(UserNu userNu);
-    boolean addOne(UserNu userNu);
-    boolean addMultiple();
+    float buy(UserNu userNu,TrolleyNu trolleyNu);
+    boolean update(UserNu userNu,TrolleyNu trolleyNu);
+    boolean remove(TrolleyNu trolleyNu);
+    boolean add(TrolleyNu trolleyNu);
 }
