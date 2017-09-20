@@ -105,18 +105,28 @@ public class UserNuController {
         return map;
     }
 
+    /**
+     * 根据seesionID查询所有信息
+     * @param userNu
+     * @param session
+     * @return
+     */
     @RequestMapping("/userFind")
     @ResponseBody
     public UserNu userFind(UserNu userNu,HttpSession session){
-        System.out.println("userFind");
         int id = Integer.parseInt(session.getAttribute("id").toString());
         userNu = userNuService.findById(id);
-        System.out.println(userNu.getUphone());
-        System.out.println("userFind1");
         return userNu;
     }
 
-
+    /**
+     * 成功跳转
+     * @return
+     */
+    @RequestMapping("/userlogin")
+    public String userlogin(){
+        return "login";
+    }
 
 
 }
