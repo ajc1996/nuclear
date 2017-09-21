@@ -103,6 +103,7 @@ public class GoodsNuController {
     public  Map<String,Object> selectByFy(int pageSize,int pageNumber,String gname){
         /*所需参数*/
         System.out.println("1");
+        System.out.println("11111111111"+gname);
         System.out.println(gname.toString());
         System.out.println("2");
         int offset=(pageNumber-1)*pageSize;
