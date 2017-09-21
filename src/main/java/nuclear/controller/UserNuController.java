@@ -136,12 +136,13 @@ public class UserNuController {
      */
     @RequestMapping("selectByUser")
     @ResponseBody
-    public Map<String ,Object> selectByUser(int pageSize,int pageNumber){
+    public Map<String ,Object> selectByUser(int pageSize,int pageNumber,String uname){
         System.out.println("user查询");
+        System.out.println("参数测试"+uname);
         /* 所需参数 */
         int offset=(pageNumber-1)*pageSize;
         int limits=pageSize;
-        return userNuService.selectByUser(offset,limits);
+        return userNuService.selectByUser(offset,limits,uname);
     }
 
     /**
@@ -152,12 +153,13 @@ public class UserNuController {
      */
     @RequestMapping("selectByManage")
     @ResponseBody
-    public Map<String ,Object> selectByManage(int pageSize,int pageNumber){
-        System.out.println("user查询");
+    public Map<String ,Object> selectByManage(int pageSize,int pageNumber,String uname){
+        System.out.println("管理员user查询");
+        System.out.println("测试1111111111"+uname);
         /* 所需参数 */
         int offset=(pageNumber-1)*pageSize;
         int limits=pageSize;
-        return userNuService.selectByManage(offset,limits);
+        return userNuService.selectByManage(offset,limits,uname);
     }
 
 

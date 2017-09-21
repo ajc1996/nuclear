@@ -36,10 +36,11 @@
                 <!-- Example Events -->
                 <div class="example-wrap">
                     <div class="example">
+
                         <div class="panel panel-default">
                             <div class="panel-heading">查询条件</div>
                             <div class="panel-body">
-                                <form id="formSearch" class="form-horizontal">
+                                <%--<form id="formSearch" class="form-horizontal">--%>
                                     <div class="form-group" style="margin-top: 15px">
                                         <label class="control-label col-sm-1" for="gname">商品名称</label>
                                         <div class="col-sm-3">
@@ -49,9 +50,10 @@
                                             <button type="button" style="margin-left: 50px" id="btn_query" class="btn btn-primary">查询</button>
                                         </div>
                                     </div>
-                                </form>
+                                <%--</form>--%>
                             </div>
                         </div>
+
                         <div class="btn-group hidden-xs" id="exampleTableEventsToolbar" role="group">
                             <button type="button" class="btn btn-outline btn-default" id="NuManageadd" data-toggle="modal" data-target="#myModal2">
                                 <i class="glyphicon glyphicon-plus" aria-hidden="true">新增</i>
@@ -426,7 +428,7 @@
         };
         return oTableInit;
     };
-
+    /*商品名查询事件*/
     $('#btn_query').click(function() {
         $('#exampleTableEvents').bootstrapTable('refresh', {url: 'selectByFy'});
     });

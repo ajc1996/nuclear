@@ -29,7 +29,25 @@
                 <!-- Example Events -->
                 <div class="example-wrap">
                     <h4 class="example-title">事件</h4>
+                    <%--管理员查询条件信息--%>
                     <div class="example">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">查询条件</div>
+                            <div class="panel-body">
+                                <%--<form id="formSearch" class="form-horizontal">--%>
+                                    <div class="form-group" style="margin-top: 15px">
+                                        <label class="control-label col-sm-1" for="uname">管理员名</label>
+                                        <div class="col-sm-3">
+                                            <input type="text" class="form-control" id="uname" name="uname">
+                                        </div>
+                                        <div class="col-sm-4" style="text-align: left">
+                                            <button type="button" style="margin-left: 50px" id="btn_query" class="btn btn-primary">查询</button>
+                                        </div>
+                                    </div>
+                                <%--</form>--%>
+                            </div>
+                        </div>
+                        <%--已有管理员操作信息--%>
                         <div class="btn-group hidden-xs" id="exampleTableEventsToolbar" role="group">
                             <button type="button" class="btn btn-outline btn-default" id="NuManageadd" data-toggle="modal" data-target="#myModal2">
                                 <i class="glyphicon glyphicon-plus" aria-hidden="true">新增</i>
@@ -201,7 +219,8 @@
                 queryParams: function queryParams(params) {
                     var param = {
                         pageNumber: params.pageNumber,
-                        pageSize: params.pageSize
+                        pageSize: params.pageSize,
+                        uname: $("#uname").val()
                     };
                     return param;
                 },
@@ -253,7 +272,10 @@
         };
         return oTableInit;
     };
-
+    /*管理员用户名查询,尚未完成*/
+    $('#btn_query').click(function() {
+        $('#exampleTableEvents').bootstrapTable('refresh', {url: 'selectByManage'});
+    });
     //修改——转换日期格式(时间戳转换为datetime格式)
     function getMyDate(str){
         var oDate = new Date(str),
