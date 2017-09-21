@@ -36,4 +36,10 @@ public interface GoodsNuService {
      */
     Map<String,Object> selectByFy(int offset,int limit,String gname);
 
+    /**
+     * 根据名字删除
+     * @param name
+     */
+    void deletebyname(String name);
+
 }

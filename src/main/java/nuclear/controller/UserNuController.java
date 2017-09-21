@@ -1,8 +1,10 @@
 package nuclear.controller;
 
+import nuclear.model.DeleteModel;
 import nuclear.model.UserNu;
 import nuclear.service.UserNuService;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -136,12 +138,13 @@ public class UserNuController {
      */
     @RequestMapping("selectByUser")
     @ResponseBody
-    public Map<String ,Object> selectByUser(int pageSize,int pageNumber){
+    public Map<String ,Object> selectByUser(int pageSize,int pageNumber,String uname){
         System.out.println("user查询");
+        System.out.println("参数测试"+uname);
         /* 所需参数 */
         int offset=(pageNumber-1)*pageSize;
         int limits=pageSize;
-        return userNuService.selectByUser(offset,limits);
+        return userNuService.selectByUser(offset,limits,uname);
     }
 
     /**
@@ -152,12 +155,26 @@ public class UserNuController {
      */
     @RequestMapping("selectByManage")
     @ResponseBody
-    public Map<String ,Object> selectByManage(int pageSize,int pageNumber){
-        System.out.println("user查询");
+    public Map<String ,Object> selectByManage(int pageSize,int pageNumber,String uname){
+        System.out.println("管理员user查询");
+        System.out.println("测试1111111111"+uname);
         /* 所需参数 */
         int offset=(pageNumber-1)*pageSize;
         int limits=pageSize;
-        return userNuService.selectByManage(offset,limits);
+        return userNuService.selectByManage(offset,limits,uname);
+    }
+
+    @RequestMapping("/delete")
+    public void userdelete(@RequestBody DeleteModel deleteModel){
+        //   String []data =request.getParameterValues("names");
+        System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++");
+        String[] username = deleteModel.getNames();
+        for (String name:username
+                ) {
+            System.out.println(name);
+            userNuService.deletebyname(name);
+        }
+        System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++");
     }
 
 

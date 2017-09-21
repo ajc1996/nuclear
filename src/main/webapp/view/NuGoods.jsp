@@ -36,10 +36,11 @@
                 <!-- Example Events -->
                 <div class="example-wrap">
                     <div class="example">
+
                         <div class="panel panel-default">
                             <div class="panel-heading">查询条件</div>
                             <div class="panel-body">
-                                <form id="formSearch" class="form-horizontal">
+                                <%--<form id="formSearch" class="form-horizontal">--%>
                                     <div class="form-group" style="margin-top: 15px">
                                         <label class="control-label col-sm-1" for="gname">商品名称</label>
                                         <div class="col-sm-3">
@@ -49,15 +50,16 @@
                                             <button type="button" style="margin-left: 50px" id="btn_query" class="btn btn-primary">查询</button>
                                         </div>
                                     </div>
-                                </form>
+                                <%--</form>--%>
                             </div>
                         </div>
+
                         <div class="btn-group hidden-xs" id="exampleTableEventsToolbar" role="group">
                             <button type="button" class="btn btn-outline btn-default" id="NuManageadd" data-toggle="modal" data-target="#myModal2">
                                 <i class="glyphicon glyphicon-plus" aria-hidden="true">新增</i>
                             </button>
                             <button type="button" class="btn btn-outline btn-default" id="NuGoodsde">
-                                <i class="glyphicon glyphicon-trash" aria-hidden="true">删除</i>
+                                <i class="glyphicon glyphicon-trash" aria-hidden="true" id="delete">删除</i>
                             </button>
                         </div>
                         <table id="exampleTableEvents" data-height="400" data-mobile-responsive="true">
@@ -390,8 +392,8 @@
                 },
                 sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
                 pageNumber:1,                       //初始化加载第一页，默认第一页
-                pageSize: 3,                       //每页的记录行数（*）
-                pageList: [2, 3, 4, 5],        //可供选择的每页的行数（*）
+                pageSize: 10,                       //每页的记录行数（*）
+                pageList: [5, 10, 15, 20],        //可供选择的每页的行数（*）
                 search: false,                       //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
                 strictSearch: true,
                 showColumns: true,                  //是否显示所有的列
@@ -426,51 +428,44 @@
         };
         return oTableInit;
     };
-
+    /*商品名查询事件*/
     $('#btn_query').click(function() {
         $('#exampleTableEvents').bootstrapTable('refresh', {url: 'selectByFy'});
     });
 
-    $("#NuGoodsde").click(function () {
-        var selectIndex = $('input[name="btSelectItem"]:checked ').val();
-        deleteItem($table, "${ctx}/resource/wfResource!deleteResourceClassType.action", selectIndex, true);
-    });
-
-    function deleteItem($table, requestUrl, selectIndex, reLoad){
-        var selRow = $table.bootstrapTable('getSelections');
-        var idField = $table.bootstrapTable("getOptions").idField;
-        var className = $table.bootstrapTable("getOptions").className;
-        if(className!=null && className.length>0){
-            className +="."
-        }else{
-            className = "";
+    document.getElementById("delete").onclick=function () {
+        var rows = $('#exampleTableEvents').bootstrapTable('getSelections');
+        if(rows.length==0) {
+            alert("请选择删除的数据");
+            return;
         }
-        var datas = className+idField+"="+eval('selRow[0].'+idField)+"&currenttime="+new Date().getTime();
-
-        if(selRow!=null){
-            qiao.bs.confirm({'title':'提示', 'msg':'此操作不可逆，确认删除第'+selectIndex+'行吗？'}, function(){
-                $.ajax({
-                    type: "POST",
-                    cache:false,
-                    async : true,
-                    dataType : "json",
-                    url:  requestUrl,
-                    data: datas,
-                    success: function(data){
-                        alert(data.mess);
-                        if ( data.state == 200 ){
-                            $table.bootstrapTable('hideRow', {index:selectIndex});
-                            if(reLoad){
-                                $table.bootstrapTable('refresh');
-                            }
-                        }
-                    }
-                });
-            })
-        }else{
-            alert('请选取要删除的数据行！');
+        var e=confirm("确认要删除选中的'" + rows.length + "'条数据吗?"  );
+        if(!e)
+            return;
+        var names = new Array();
+        $.each(rows,function (i,row) {
+            names[i]=row['gname'];
+        });
+        var deleteModel ={
+            names: names
         }
-    }
+        alert(names[2]);
+        //   var param={"names":names};
+        $.ajax({
+            type : "post",
+            url :"goodsdelete",
+            contentType:'application/json;charset=UTF-8',
+            data : JSON.stringify(deleteModel),
+            success : function(data) {
+                doQuery();
+            },
+            error:function () {
+                $('#exampleTableEvents').bootstrapTable('refresh', {url: 'selectByFy'});
+            }
+        })
+
+    };
+
 
     //修改——转换日期格式(时间戳转换为datetime格式)
     function getMyDate(str){

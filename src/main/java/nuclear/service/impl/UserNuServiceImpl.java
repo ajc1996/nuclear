@@ -129,11 +129,25 @@ public class UserNuServiceImpl implements UserNuService {
      * @return
      */
     @Override
-    public Map<String, Object> selectByUser(int offset, int limit) {
+    public Map<String, Object> selectByUser(int offset, int limit,String uname) {
         //清理Example将limit和offset放进去
+        System.out.println("普通用户测试1111"+uname);
         userNuExample.clear();
-        userNuExample.createCriteria().andUlimitsEqualTo(3);
-        int total = userNuMapper.selectByExample(userNuExample).size();
+        int total=0;
+        if(uname.equals("")){
+            System.out.println("uname是null");
+            userNuExample.createCriteria().andUlimitsEqualTo(3);
+            total = userNuMapper.selectByExample(userNuExample).size();
+
+        }else{
+            System.out.println("uname进入");
+            uname = "%" + uname + "%";
+            userNuExample.createCriteria().andUnameLike(uname).andUlimitsEqualTo(3);
+            total = userNuMapper.selectByExample(userNuExample).size();
+        }
+
+        /*userNuExample.createCriteria().andUlimitsEqualTo(3);*/
+       /* int total = userNuMapper.selectByExample(userNuExample).size();*/
         userNuExample.setLimit(limit);
         userNuExample.setOffset(offset);
         //用map存放数据
@@ -151,11 +165,24 @@ public class UserNuServiceImpl implements UserNuService {
      * @return
      */
     @Override
-    public Map<String, Object> selectByManage(int offset, int limit) {
+    public Map<String, Object> selectByManage(int offset, int limit,String uname) {
         //清理Example将limit和offset放进去
+        System.out.println("11111111111实现类参数"+uname);
+        int total=0;
         userNuExample.clear();
-        userNuExample.createCriteria().andUlimitsEqualTo(2);
-        int total = userNuMapper.selectByExample(userNuExample).size();
+        if(uname.equals("")){
+            System.out.println("uname是null");
+            userNuExample.createCriteria().andUlimitsEqualTo(2);
+            total = userNuMapper.selectByExample(userNuExample).size();
+
+        }else{
+            System.out.println("uname进入");
+            uname = "%" + uname + "%";
+            userNuExample.createCriteria().andUnameLike(uname).andUlimitsEqualTo(2);
+            total = userNuMapper.selectByExample(userNuExample).size();
+        }
+       /* userNuExample.createCriteria().andUlimitsEqualTo(2).andUnameLike(uname);*/
+       /*int total = userNuMapper.selectByExample(userNuExample).size();*/
         userNuExample.setLimit(limit);
         userNuExample.setOffset(offset);
         //用map存放数据
@@ -164,5 +191,16 @@ public class UserNuServiceImpl implements UserNuService {
         result.put("total",total);
         result.put("rows",rows);
         return result;
+    }
+
+    /**
+     *
+     * @param name
+     */
+    @Override
+    public void deletebyname(String name) {
+        userNuExample.clear();
+        userNuExample.createCriteria().andUnameEqualTo(name);
+        userNuMapper.deleteByExample(userNuExample);
     }
 }

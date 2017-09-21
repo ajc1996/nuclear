@@ -30,12 +30,30 @@
             <div class="example-wrap">
                 <h4 class="example-title">事件</h4>
                 <div class="example">
+                <%--用户名查询框模块--%>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">查询条件</div>
+                        <div class="panel-body">
+                           <%-- <form id="formSearch" class="form-horizontal">--%>
+                                <div class="form-group" style="margin-top: 15px">
+                                    <label class="control-label col-sm-1" for="uname">用户名</label>
+                                    <div class="col-sm-3">
+                                        <input type="text" class="form-control" id="uname" name="uname">
+                                    </div>
+                                    <div class="col-sm-4" style="text-align: left">
+                                        <button type="button" style="margin-left: 50px" id="btn_query" class="btn btn-primary">查询</button>
+                                    </div>
+                                </div>
+                           <%-- </form>--%>
+                        </div>
+                    </div>
+                 <%--已有信息操作模块--%>
                     <div class="btn-group hidden-xs" id="exampleTableEventsToolbar" role="group">
                         <button type="button" class="btn btn-outline btn-default" id="NuManageadd" data-toggle="modal" data-target="#myModal2">
                             <i class="glyphicon glyphicon-plus" aria-hidden="true">新增</i>
                         </button>
                         <button type="button" class="btn btn-outline btn-default">
-                            <i class="glyphicon glyphicon-trash" aria-hidden="true">删除</i>
+                            <i class="glyphicon glyphicon-trash" aria-hidden="true" id="delete">删除</i>
                         </button>
                     </div>
                     <table id="exampleTableEvents" data-height="400" data-mobile-responsive="true">
@@ -136,7 +154,7 @@
                             type: 'post',
                             data: function (validator) {
                                 return {
-                                    maccont: $("#uname").val()
+                                    uname: $("#uname").val()
                                 };
                             },
                             delay: 1000
@@ -201,7 +219,8 @@
                 queryParams: function queryParams(params) {
                     var param = {
                         pageNumber: params.pageNumber,
-                        pageSize: params.pageSize
+                        pageSize: params.pageSize,
+                        uname: $("#uname").val()
                     };
                     return param;
                 },
@@ -254,6 +273,11 @@
         return oTableInit;
     };
 
+
+    /*管理员用户名查询,尚未完成*/
+    $('#btn_query').click(function() {
+        $('#exampleTableEvents').bootstrapTable('refresh', {url: 'selectByUser'});
+    });
     //修改——转换日期格式(时间戳转换为datetime格式)
     function getMyDate(str){
         var oDate = new Date(str),
@@ -263,6 +287,39 @@
             oTime = oYear +'-'+ getzf(oMonth) +'-'+ getzf(oDay);//最后拼接时间
         return oTime;
     }
+
+    document.getElementById("delete").onclick=function () {
+        var rows = $('#exampleTableEvents').bootstrapTable('getSelections');
+        if(rows.length==0) {
+            alert("请选择删除的数据");
+            return;
+        }
+        var e=confirm("确认要删除选中的'" + rows.length + "'条数据吗?"  );
+        if(!e)
+            return;
+        var names = new Array();
+        $.each(rows,function (i,row) {
+            names[i]=row['uname'];
+        });
+        var deleteModel ={
+            names: names
+        }
+        alert(names[2]);
+        //   var param={"names":names};
+        $.ajax({
+            type : "post",
+            url :"delete",
+            contentType:'application/json;charset=UTF-8',
+            data : JSON.stringify(deleteModel),
+            success : function() {
+                doQuery();
+            },
+            error:function () {
+                alert("服务器出错！")
+            }
+        })
+
+    };
 
     //补0操作
     function getzf(num){

@@ -47,7 +47,7 @@ public interface UserNuService {
      * @param limit
      * @return
      */
-    Map<String,Object> selectByUser(int offset,int limit);
+    Map<String,Object> selectByUser(int offset,int limit,String uname);
 
     /**
      * 管理员分页查询
@@ -55,6 +55,12 @@ public interface UserNuService {
      * @param limit
      * @return
      */
-    Map<String,Object> selectByManage(int offset,int limit);
+    Map<String,Object> selectByManage(int offset,int limit,String uname);
+
+    /**
+     * 根据名字删除
+     * @param name
+     */
+    void deletebyname(String name);
 
 }

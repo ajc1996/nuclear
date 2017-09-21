@@ -1,9 +1,11 @@
 package nuclear.controller;
 
+import nuclear.model.DeleteModel;
 import nuclear.model.GoodsNu;
 import nuclear.service.GoodsNuService;
 import nuclear.util.Base64;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -103,11 +105,29 @@ public class GoodsNuController {
     public  Map<String,Object> selectByFy(int pageSize,int pageNumber,String gname){
         /*所需参数*/
         System.out.println("1");
+        System.out.println("11111111111"+gname);
         System.out.println(gname.toString());
         System.out.println("2");
         int offset=(pageNumber-1)*pageSize;
         int limits=pageSize;
         return goodsNuService.selectByFy(offset,limits,gname);
+    }
+
+    /**
+     * 根据名字删除
+     * @param deleteModel
+     */
+    @RequestMapping("/goodsdelete")
+    public void goodsdelete(@RequestBody DeleteModel deleteModel){
+        //   String []data =request.getParameterValues("names");
+        System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++");
+        String[] username = deleteModel.getNames();
+        for (String name:username
+                ) {
+            System.out.println(name);
+            goodsNuService.deletebyname(name);
+        }
+        System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++");
     }
 
 }
