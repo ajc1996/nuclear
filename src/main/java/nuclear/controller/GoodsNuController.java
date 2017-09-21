@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.util.Date;
 import java.util.HashMap;
@@ -128,6 +129,32 @@ public class GoodsNuController {
             goodsNuService.deletebyname(name);
         }
         System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++");
+    }
+
+    /**
+     * 主界面分页
+     * @return
+     */
+    @RequestMapping("selectByHome")
+    @ResponseBody
+    public List<GoodsNu> selectByHome(GoodsNu goodsNu){
+        System.out.println("进入");
+        /*所需参数*/
+        return goodsNuService.selectByHome(goodsNu);
+    }
+
+    /**
+     * 根据名字查询
+     * @param goodsNu
+     * @param gname
+     * @return
+     */
+    @RequestMapping("selectByGname")
+    @ResponseBody
+    public List<GoodsNu> selectByGname(String gname,HttpServletResponse response){
+        System.out.println(gname);
+        System.out.println("查询");
+        return goodsNuService.selectByGname(gname);
     }
 
 }

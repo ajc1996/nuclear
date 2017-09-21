@@ -93,7 +93,7 @@ public class GoodsNuServiceImpl implements GoodsNuService {
     }
 
     /**
-     *
+     *  根据名字查询
      * @param name
      */
     @Override
@@ -101,5 +101,37 @@ public class GoodsNuServiceImpl implements GoodsNuService {
         goodsNuExample.clear();
         goodsNuExample.createCriteria().andGnameEqualTo(name);
         goodsNuMapper.deleteByExample(goodsNuExample);
+    }
+
+    /**
+     * 查询Home分页
+     * @return
+     */
+    @Override
+    public List<GoodsNu> selectByHome(GoodsNu goodsNu) {
+        List<GoodsNu> rows = goodsNuMapper.selectByExample(null);
+        System.out.println("出来");
+        return rows;
+    }
+
+    /**
+     * 根据gname查询Home
+     * @param gname
+     * @return
+     */
+    @Override
+    public List<GoodsNu> selectByGname(String gname) {
+        goodsNuExample.clear();
+        List<GoodsNu> rows = goodsNuMapper.selectByExample(null);
+        if(gname == null){
+
+        }else {
+            System.out.println("进入其中");
+            gname = "%" + gname + "%";
+            goodsNuExample.createCriteria().andGnameLike(gname);
+            rows = goodsNuMapper.selectByExample(goodsNuExample);
+        }
+        System.out.println("zzzzz");
+        return rows;
     }
 }

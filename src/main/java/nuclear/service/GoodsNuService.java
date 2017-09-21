@@ -42,4 +42,16 @@ public interface GoodsNuService {
      */
     void deletebyname(String name);
 
+    /**
+     * 查询数据
+     * @return
+     */
+    List<GoodsNu> selectByHome(GoodsNu goodsNu);
+
+    /**
+     * 根据名字查询
+     * @return
+     */
+    List<GoodsNu> selectByGname(String gname);
+
 }
