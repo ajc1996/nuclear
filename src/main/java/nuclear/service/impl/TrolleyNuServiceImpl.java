@@ -21,16 +21,16 @@ public class TrolleyNuServiceImpl implements TrolleyNuService {
     private TrolleyNuExample trolleyNuExample;
 
     @Override
-    public List<TrolleyNu> allGoods(UserNu userNu) {
+    public List<TrolleyNu> allGoods(int id) {
         trolleyNuExample.clear();
-        trolleyNuExample.createCriteria().andTuidEqualTo(userNu.getUid());
+        trolleyNuExample.createCriteria().andTuidEqualTo(id);
         List<TrolleyNu> trolleyNuList =trolleyNuMapper.selectByExample(trolleyNuExample);
-        trolleyNuList.forEach(trolleyNu ->trolleyNu.setGoodsNu(goodsNuMapper.selectByPrimaryKey(trolleyNu.getTgid())));
+        trolleyNuList.forEach(trolleyNu -> trolleyNu.setGoodsNu(goodsNuMapper.selectByPrimaryKey(trolleyNu.getTgid())));
         return trolleyNuList;
     }
 
     @Override
-    public float buy(UserNu userNu, TrolleyNu trolleyNu) {
+    public float buy(TrolleyNu trolleyNu) {
         float count = (float) (trolleyNu.getTcount()*goodsNuMapper.selectByPrimaryKey(trolleyNu.getTgid()).getGprice());
         trolleyNuMapper.deleteByPrimaryKey(trolleyNu.getTid());
         return count;
