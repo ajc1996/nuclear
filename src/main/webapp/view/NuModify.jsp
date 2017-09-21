@@ -24,6 +24,15 @@
     <link href="https://cdn.bootcss.com/bootstrap-validator/0.5.3/css/bootstrapValidator.min.css" rel="stylesheet">
     <link href="head/cropper.min.css" rel="stylesheet">
     <link href="head/sitelogo.css" rel="stylesheet">
+    <style>
+        #circles{
+            width: 80px;
+            height: 80px;
+            -moz-border-radius: 50px;
+            -webkit-border-radius: 50px;
+            border-radius: 50px;
+        }
+    </style>
 
 </head>
 
@@ -59,7 +68,9 @@
                             <div class="form-group">
                                 <label class="col-sm-4 control-label" style="line-height: 80px">头像</label>
                                 <div class="col-sm-5">
-                                    <a data-toggle="modal" data-target="#avatar-modal"><img alt="image" class="img-circle" src="${pic}" style="width: 80px;height: 80px" /></a>
+                                    <div class="avatar-wrapper preview-lg" id="circles">
+                                        <a data-toggle="modal" data-target="#avatar-modal"><img class="img-responsive center-block img-circle" src="${pic}" /></a>
+                                    </div>
                                 </div>
                             </div>
                             <div class="hr-line-dashed"></div>
@@ -203,11 +214,15 @@
                 type:'POST',
                 dataType: 'text',
                 success:function(data){
-                    alert(data);
                     var obj = eval('(' + data + ')');
                     alert(obj.usex);
                     var uusex = obj.usex;
-                    var utime = getMyDate(obj.ubirthday);
+                    var utime = null;
+                    if(obj.ubirthday == null){
+                        utime = obj.ubirthday;
+                    }else {
+                        utime = getMyDate(obj.ubirthday);
+                    }
                     $("#uphone").attr("value",obj.uphone);
                     $("#ubirthday").attr("value",utime);
                     if(-1 < uusex.indexOf("M")){

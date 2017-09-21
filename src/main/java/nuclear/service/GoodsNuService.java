@@ -34,6 +34,6 @@ public interface GoodsNuService {
      * @param limit
      * @return
      */
-    Map<String,Object> selectByFy(int offset,int limit);
+    Map<String,Object> selectByFy(int offset,int limit,String gname);
 
 }

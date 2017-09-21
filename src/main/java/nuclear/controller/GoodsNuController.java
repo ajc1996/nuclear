@@ -100,12 +100,14 @@ public class GoodsNuController {
      */
     @RequestMapping("selectByFy")
     @ResponseBody
-    public  Map<String,Object> selectByFy(int pageSize,int pageNumber){
+    public  Map<String,Object> selectByFy(int pageSize,int pageNumber,String gname){
         /*所需参数*/
+        System.out.println("1");
+        System.out.println(gname.toString());
+        System.out.println("2");
         int offset=(pageNumber-1)*pageSize;
         int limits=pageSize;
-
-        return goodsNuService.selectByFy(offset,limits);
+        return goodsNuService.selectByFy(offset,limits,gname);
     }
 
 }

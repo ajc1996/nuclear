@@ -4,6 +4,7 @@ import nuclear.interfaces.MessageSender;
 import nuclear.model.UserNu;
 
 import java.util.List;
+import java.util.Map;
 
 public interface UserNuService {
 
@@ -39,4 +40,21 @@ public interface UserNuService {
      * @return
      */
     String usermodify(UserNu userNu);
+
+    /**
+     * 用户分页查询
+     * @param offset
+     * @param limit
+     * @return
+     */
+    Map<String,Object> selectByUser(int offset,int limit);
+
+    /**
+     * 管理员分页查询
+     * @param offset
+     * @param limit
+     * @return
+     */
+    Map<String,Object> selectByManage(int offset,int limit);
+
 }

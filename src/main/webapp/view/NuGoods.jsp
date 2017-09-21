@@ -36,11 +36,27 @@
                 <!-- Example Events -->
                 <div class="example-wrap">
                     <div class="example">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">查询条件</div>
+                            <div class="panel-body">
+                                <form id="formSearch" class="form-horizontal">
+                                    <div class="form-group" style="margin-top: 15px">
+                                        <label class="control-label col-sm-1" for="gname">商品名称</label>
+                                        <div class="col-sm-3">
+                                            <input type="text" class="form-control" id="gname" name="gname">
+                                        </div>
+                                        <div class="col-sm-4" style="text-align: left">
+                                            <button type="button" style="margin-left: 50px" id="btn_query" class="btn btn-primary">查询</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
                         <div class="btn-group hidden-xs" id="exampleTableEventsToolbar" role="group">
                             <button type="button" class="btn btn-outline btn-default" id="NuManageadd" data-toggle="modal" data-target="#myModal2">
                                 <i class="glyphicon glyphicon-plus" aria-hidden="true">新增</i>
                             </button>
-                            <button type="button" class="btn btn-outline btn-default">
+                            <button type="button" class="btn btn-outline btn-default" id="NuGoodsde">
                                 <i class="glyphicon glyphicon-trash" aria-hidden="true">删除</i>
                             </button>
                         </div>
@@ -367,7 +383,8 @@
                 queryParams: function queryParams(params) {
                     var param = {
                         pageNumber: params.pageNumber,
-                        pageSize: params.pageSize
+                        pageSize: params.pageSize,
+                        gname: $("#gname").val()
                     };
                     return param;
                 },
@@ -375,7 +392,7 @@
                 pageNumber:1,                       //初始化加载第一页，默认第一页
                 pageSize: 3,                       //每页的记录行数（*）
                 pageList: [2, 3, 4, 5],        //可供选择的每页的行数（*）
-                search: true,                       //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+                search: false,                       //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
                 strictSearch: true,
                 showColumns: true,                  //是否显示所有的列
                 showRefresh: true,                  //是否显示刷新按钮
@@ -409,6 +426,51 @@
         };
         return oTableInit;
     };
+
+    $('#btn_query').click(function() {
+        $('#exampleTableEvents').bootstrapTable('refresh', {url: 'selectByFy'});
+    });
+
+    $("#NuGoodsde").click(function () {
+        var selectIndex = $('input[name="btSelectItem"]:checked ').val();
+        deleteItem($table, "${ctx}/resource/wfResource!deleteResourceClassType.action", selectIndex, true);
+    });
+
+    function deleteItem($table, requestUrl, selectIndex, reLoad){
+        var selRow = $table.bootstrapTable('getSelections');
+        var idField = $table.bootstrapTable("getOptions").idField;
+        var className = $table.bootstrapTable("getOptions").className;
+        if(className!=null && className.length>0){
+            className +="."
+        }else{
+            className = "";
+        }
+        var datas = className+idField+"="+eval('selRow[0].'+idField)+"&currenttime="+new Date().getTime();
+
+        if(selRow!=null){
+            qiao.bs.confirm({'title':'提示', 'msg':'此操作不可逆，确认删除第'+selectIndex+'行吗？'}, function(){
+                $.ajax({
+                    type: "POST",
+                    cache:false,
+                    async : true,
+                    dataType : "json",
+                    url:  requestUrl,
+                    data: datas,
+                    success: function(data){
+                        alert(data.mess);
+                        if ( data.state == 200 ){
+                            $table.bootstrapTable('hideRow', {index:selectIndex});
+                            if(reLoad){
+                                $table.bootstrapTable('refresh');
+                            }
+                        }
+                    }
+                });
+            })
+        }else{
+            alert('请选取要删除的数据行！');
+        }
+    }
 
     //修改——转换日期格式(时间戳转换为datetime格式)
     function getMyDate(str){
