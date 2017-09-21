@@ -136,7 +136,8 @@ public class UserNuServiceImpl implements UserNuService {
         int total=0;
         if(uname.equals("")){
             System.out.println("uname是null");
-            total = userNuMapper.selectByExample(null).size();
+            userNuExample.createCriteria().andUlimitsEqualTo(3);
+            total = userNuMapper.selectByExample(userNuExample).size();
 
         }else{
             System.out.println("uname进入");
@@ -169,10 +170,10 @@ public class UserNuServiceImpl implements UserNuService {
         System.out.println("11111111111实现类参数"+uname);
         int total=0;
         userNuExample.clear();
-
         if(uname.equals("")){
             System.out.println("uname是null");
-            total = userNuMapper.selectByExample(null).size();
+            userNuExample.createCriteria().andUlimitsEqualTo(2);
+            total = userNuMapper.selectByExample(userNuExample).size();
 
         }else{
             System.out.println("uname进入");
