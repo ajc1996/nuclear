@@ -57,4 +57,10 @@ public interface UserNuService {
      */
     Map<String,Object> selectByManage(int offset,int limit,String uname);
 
+    /**
+     * 根据名字删除
+     * @param name
+     */
+    void deletebyname(String name);
+
 }

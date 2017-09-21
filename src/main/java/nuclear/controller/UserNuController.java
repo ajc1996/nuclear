@@ -1,8 +1,10 @@
 package nuclear.controller;
 
+import nuclear.model.DeleteModel;
 import nuclear.model.UserNu;
 import nuclear.service.UserNuService;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -160,6 +162,19 @@ public class UserNuController {
         int offset=(pageNumber-1)*pageSize;
         int limits=pageSize;
         return userNuService.selectByManage(offset,limits,uname);
+    }
+
+    @RequestMapping("/delete")
+    public void userdelete(@RequestBody DeleteModel deleteModel){
+        //   String []data =request.getParameterValues("names");
+        System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++");
+        String[] username = deleteModel.getNames();
+        for (String name:username
+                ) {
+            System.out.println(name);
+            userNuService.deletebyname(name);
+        }
+        System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++");
     }
 
 

@@ -53,7 +53,7 @@
                                 <i class="glyphicon glyphicon-plus" aria-hidden="true">新增</i>
                             </button>
                             <button type="button" class="btn btn-outline btn-default">
-                                <i class="glyphicon glyphicon-trash" aria-hidden="true">删除</i>
+                                <i class="glyphicon glyphicon-trash" aria-hidden="true" id="delete">删除</i>
                             </button>
                         </div>
                         <table id="exampleTableEvents" data-height="400" data-mobile-responsive="true">
@@ -154,7 +154,7 @@
                             type: 'post',
                             data: function (validator) {
                                 return {
-                                    maccont: $("#uname").val()
+                                    uname: $("#uname").val()
                                 };
                             },
                             delay: 1000
@@ -285,6 +285,39 @@
             oTime = oYear +'-'+ getzf(oMonth) +'-'+ getzf(oDay);//最后拼接时间
         return oTime;
     }
+
+    document.getElementById("delete").onclick=function () {
+        var rows = $('#exampleTableEvents').bootstrapTable('getSelections');
+        if(rows.length==0) {
+            alert("请选择删除的数据");
+            return;
+        }
+        var e=confirm("确认要删除选中的'" + rows.length + "'条数据吗?"  );
+        if(!e)
+            return;
+        var names = new Array();
+        $.each(rows,function (i,row) {
+            names[i]=row['uname'];
+        });
+        var deleteModel ={
+            names: names
+        }
+        alert(names[2]);
+        //   var param={"names":names};
+        $.ajax({
+            type : "post",
+            url :"delete",
+            contentType:'application/json;charset=UTF-8',
+            data : JSON.stringify(deleteModel),
+            success : function() {
+                doQuery();
+            },
+            error:function () {
+                alert("服务器出错！")
+            }
+        })
+
+    };
 
     //补0操作
     function getzf(num){

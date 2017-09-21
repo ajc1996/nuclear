@@ -91,4 +91,15 @@ public class GoodsNuServiceImpl implements GoodsNuService {
         result.put("rows",rows);
         return result;
     }
+
+    /**
+     *
+     * @param name
+     */
+    @Override
+    public void deletebyname(String name) {
+        goodsNuExample.clear();
+        goodsNuExample.createCriteria().andGnameEqualTo(name);
+        goodsNuMapper.deleteByExample(goodsNuExample);
+    }
 }

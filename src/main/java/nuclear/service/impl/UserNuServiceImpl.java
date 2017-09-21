@@ -192,4 +192,15 @@ public class UserNuServiceImpl implements UserNuService {
         result.put("rows",rows);
         return result;
     }
+
+    /**
+     *
+     * @param name
+     */
+    @Override
+    public void deletebyname(String name) {
+        userNuExample.clear();
+        userNuExample.createCriteria().andUnameEqualTo(name);
+        userNuMapper.deleteByExample(userNuExample);
+    }
 }
