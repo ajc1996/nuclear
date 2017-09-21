@@ -56,7 +56,7 @@
                             <button type="button" class="btn btn-outline btn-default" id="NuManageadd" data-toggle="modal" data-target="#myModal2">
                                 <i class="glyphicon glyphicon-plus" aria-hidden="true">新增</i>
                             </button>
-                            <button type="button" class="btn btn-outline btn-default">
+                            <button type="button" class="btn btn-outline btn-default" id="NuGoodsde">
                                 <i class="glyphicon glyphicon-trash" aria-hidden="true">删除</i>
                             </button>
                         </div>
@@ -384,7 +384,7 @@
                     var param = {
                         pageNumber: params.pageNumber,
                         pageSize: params.pageSize,
-                        gname: $("#gname").val(),
+                        gname: $("#gname").val()
                     };
                     return param;
                 },
@@ -426,6 +426,51 @@
         };
         return oTableInit;
     };
+
+    $('#btn_query').click(function() {
+        $('#exampleTableEvents').bootstrapTable('refresh', {url: 'selectByFy'});
+    });
+
+    $("#NuGoodsde").click(function () {
+        var selectIndex = $('input[name="btSelectItem"]:checked ').val();
+        deleteItem($table, "${ctx}/resource/wfResource!deleteResourceClassType.action", selectIndex, true);
+    });
+
+    function deleteItem($table, requestUrl, selectIndex, reLoad){
+        var selRow = $table.bootstrapTable('getSelections');
+        var idField = $table.bootstrapTable("getOptions").idField;
+        var className = $table.bootstrapTable("getOptions").className;
+        if(className!=null && className.length>0){
+            className +="."
+        }else{
+            className = "";
+        }
+        var datas = className+idField+"="+eval('selRow[0].'+idField)+"&currenttime="+new Date().getTime();
+
+        if(selRow!=null){
+            qiao.bs.confirm({'title':'提示', 'msg':'此操作不可逆，确认删除第'+selectIndex+'行吗？'}, function(){
+                $.ajax({
+                    type: "POST",
+                    cache:false,
+                    async : true,
+                    dataType : "json",
+                    url:  requestUrl,
+                    data: datas,
+                    success: function(data){
+                        alert(data.mess);
+                        if ( data.state == 200 ){
+                            $table.bootstrapTable('hideRow', {index:selectIndex});
+                            if(reLoad){
+                                $table.bootstrapTable('refresh');
+                            }
+                        }
+                    }
+                });
+            })
+        }else{
+            alert('请选取要删除的数据行！');
+        }
+    }
 
     //修改——转换日期格式(时间戳转换为datetime格式)
     function getMyDate(str){

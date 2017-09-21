@@ -69,14 +69,23 @@ public class GoodsNuServiceImpl implements GoodsNuService {
      * @return
      */
     @Override
-    public Map<String, Object> selectByFy(int offset,int limit) {
+    public Map<String, Object> selectByFy(int offset,int limit,String gname) {
         //清理Example将limit和offset放进去
         goodsNuExample.clear();
+        int total = 0;
+        if(gname.equals("")){
+            System.out.println("gname是null");
+            total = goodsNuMapper.selectByExample(null).size();
+        }else{
+            System.out.println("gname进入");
+            gname = "%" + gname + "%";
+            goodsNuExample.createCriteria().andGnameLike(gname);
+            total = goodsNuMapper.selectByExample(goodsNuExample).size();
+        }
         goodsNuExample.setLimit(limit);
         goodsNuExample.setOffset(offset);
         //用map存放数据；bootstrap table需要两个参数一个就是total和rows
         Map<String,Object> result = new HashMap<String,Object>();
-        int total = goodsNuMapper.selectByExample(null).size();
         List<GoodsNu> rows = goodsNuMapper.selectByExample(goodsNuExample);
         result.put("total",total);
         result.put("rows",rows);
