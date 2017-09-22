@@ -1,13 +1,43 @@
 package nuclear.model;
 
-public class TrolleyNu {
+import org.springframework.stereotype.Service;
+
+@Service
+public class TrolleyNu extends GoodsNu{
     private Integer tid;
 
     private Integer tuid;
 
+    @Override
+    public String toString() {
+        return "TrolleyNu{" +
+                "tid=" + tid +
+                ", tuid=" + tuid +
+                ", tgid=" + tgid +
+                ", tcount=" + tcount +
+                ", gid=" + getGid() +
+                ", gname=" + getGname() +
+                ", gprice=" + getGprice() +
+                ", gintro=" + getGintro() +
+                ", gpic=" + getGpic() +
+                ", grepertory=" + getGrepertory() +
+                ", gbirthday=" + getGbirthday() +
+                '}';
+    }
+
     private Integer tgid;
 
     private Integer tcount;
+
+    public void setGoodsNu(GoodsNu goodsNu){
+        this.setGid(goodsNu.getGid());
+        this.setGname(goodsNu.getGname());
+        this.setGprice(goodsNu.getGprice());
+        this.setGintro(goodsNu.getGintro());
+        this.setGpic(goodsNu.getGpic());
+        this.setGrepertory(goodsNu.getGrepertory());
+        this.setGbirthday(goodsNu.getGbirthday());
+    }
 
     public TrolleyNu(Integer tid, Integer tuid, Integer tgid, Integer tcount) {
         this.tid = tid;
