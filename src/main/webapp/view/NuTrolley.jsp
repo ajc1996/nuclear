@@ -179,12 +179,6 @@
         }
     }
 
-//    $(document).on("click",".btn-primary",function () {
-//        alert("1");
-//        var src = $(this).attr('value');
-//        alert()
-//
-//    });
 
     function buytrolley(index) {
         var tid = $("#"+index).val();

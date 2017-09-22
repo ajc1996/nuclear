@@ -181,5 +181,25 @@ public class UserNuController {
         System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++");
     }
 
+    /**
+     * 这里是用户注册模块
+     */
+    @RequestMapping("userRegister")
+    @ResponseBody
+    public String userRegister(UserNu user){
+        String msg="";
+        Boolean judge=userNuService.judgecname(user);
+        user.setUlimits(3);
+        /*judge返回值为true表示的是没有这个对象*/
+        if(judge==true){
+            userNuService.useradd(user);
+            msg="right";
+        }else{
+            msg="wrong";
+        }
+        return msg;
+    }
+
+
 
 }
