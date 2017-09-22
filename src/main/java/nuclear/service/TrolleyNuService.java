@@ -11,5 +11,7 @@ public interface TrolleyNuService {
     float buy(TrolleyNu trolleyNu);
     boolean update(UserNu userNu,TrolleyNu trolleyNu);
     boolean remove(TrolleyNu trolleyNu);
+    boolean remove(int id);
     boolean add(TrolleyNu trolleyNu);
+    TrolleyNu findById(int id);
 }

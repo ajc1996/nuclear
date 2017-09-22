@@ -51,8 +51,21 @@ public class TrolleyNuServiceImpl implements TrolleyNuService {
     }
 
     @Override
+    public boolean remove(int id) {
+        trolleyNuMapper.deleteByPrimaryKey(id);
+        return true;
+    }
+
+    @Override
     public boolean add(TrolleyNu trolleyNu) {
         trolleyNuMapper.insert(trolleyNu);
         return true;
+    }
+
+    @Override
+    public TrolleyNu findById(int id) {
+       TrolleyNu trolleyNu=trolleyNuMapper.selectByPrimaryKey(id);
+       trolleyNu.setGoodsNu(goodsNuMapper.selectByPrimaryKey(trolleyNu.getTgid()));
+       return trolleyNu;
     }
 }

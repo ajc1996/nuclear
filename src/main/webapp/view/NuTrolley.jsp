@@ -26,7 +26,7 @@
     <link href="head/cropper.min.css" rel="stylesheet">
     <link href="head/sitelogo.css" rel="stylesheet">
     <style>
-        #circles{
+        #circles {
             width: 80px;
             height: 80px;
             -moz-border-radius: 50px;
@@ -39,9 +39,9 @@
 <script>
     function show() {
         $("#tros").html("");
-        $.post("trolley/totrolley",{},
-            function(data,status){
-                $.each(data,function(index,Items){
+        $.post("trolley/totrolley", {},
+            function (data, status) {
+                $.each(data, function (index, Items) {
                     $("#tros").append("    <div class=\"ibox-content\" >\n" +
                         "            <div  style=\"width: 800px;height:120px; \">\n" +
                         "            <div class=\"form-group\" style=\"width: 100px;height:100px;margin-top:10px;margin-left: 20px;\">\n" +
@@ -52,27 +52,27 @@
                         "\n" +
                         "            <div class=\"form-group\" style=\" float:left;  margin-left: 180px;margin-top: -115px;width:160px;height:100px;line-height: 100px;\" >\n" +
                         "\n" +
-                        "            <a href=\"#\">"+Items.gname+"</a>\n" +
+                        "            <a href=\"#\">" + Items.gname + "</a>\n" +
                         "            </div>\n" +
                         "            <div class=\"form-group\" style=\" float:left;  margin-left: 300px;margin-top: -115px;width:160px;height:100px;line-height: 100px;\">\n" +
                         "\n" +
-                        "            <span>单价：</span>"+Items.gprice+"\n" +
+                        "            <span>单价：</span>" + Items.gprice + "元\n" +
                         "        </div>\n" +
                         "        <div class=\"form-group\" style=\" float:left;  margin-left: 470px;margin-top: -115px;width:160px;height:100px;line-height: 100px;\">\n" +
-                        "            <span>数量：</span>"+Items.tcount+"\n" +
+                        "            <span>数量：</span>" + Items.tcount + "\n" +
                         "        </div>\n" +
                         "        <div class=\"form-group\" style=\" float:left; margin-left: 640px;margin-top: -115px;width:100px;height:100px;line-height: 100px;\">\n" +
                         "\n" +
-                        "            <span>金额：</span><span id='count'>"+Items.gprice*Items.tcount+"\n</span>" +
+                        "            <span>金额：</span><span id='count'>" + Items.gprice * Items.tcount + "元\n</span>" +
                         "        </div>\n" +
                         "        <div class=\"form-group\" style=\" float:left;border-radius: 50%;  margin-left: 830px;margin-top: -115px;width:50px;height:20px;line-height: 100px;\">\n" +
-                        "            <input type=\"button\"  class=\"btn btn-primary\" value=\"删除\"  onclick=\"deltrolley();\">\n"  +
+                        "            <input type=\"button\"  class=\"btn btn-primary\" value=\"删除\"  onclick=\"deltrolley();\">\n" +
                         "            </div>\n" +
                         "        <div class=\"form-group\" style=\" float:left;border-radius: 50%; margin-left: 950px;margin-top: -115px;width:50px;height:20px;line-height: 100px;\">\n" +
                         "            <input type=\"button\"  class=\"btn btn-primary\" value=\"购买\"  onclick=\"buytrolley();\">\n" +
                         "            </div>\n" +
                         "        <div class=\"form-group\" style=\" position:relative;right:960px;top: 5px;float:left;border-radius: 50%; margin-left: 950px;margin-top: -115px;width:50px;height:20px;line-height: 100px;\">\n" +
-                        "            <input type=\"checkbox\" id=\"tid\" value=\""+Items.tid+"\">\n" +
+                        "            <input type=\"checkbox\" class =\"tid\" id =\"tid\" name=\"tid\" value=\"" + Items.tid + "\">\n" +
                         "            </div>\n" +
                         "            </div>\n" +
                         "            </div>\n" +
@@ -80,29 +80,110 @@
                 });
             });
     }
+    function getids() {
+        var ids = new Array();
+        var i = 0;
+        $(".tid").each(function () {
+            if ($(this).prop("checked")) {
+                ids[i] = $(this).val();
+                i++;
+            }
+        });
+       return ids;
+    }
 
     $(document).ready(function () {
-            show();
-        }
-    );
-  function deltrolley() {
-            var tid =$("#tid").val();
+        show();
+        $("#ids").change(function () {
+            $(".tid").each(function () {
+                if ($("#ids").prop("checked")) {
+                    if (!$(this).prop("checked")) {
+                        $(this).prop("checked", true);
+                    }
+                }else{
+                    if ($(this).prop("checked")) {
+                        $(this).prop("checked", false);
+                    }
+                }
+            });
+        });
+        $("#deleteall").click(function () {
+            if (confirm("真的要删除吗?")) {
+                var TrolleyModel = {
+                    ids: getids()
+                }
+                $.ajax({
+                    type: "post",
+                    url: "trolley/delAll",
+                    contentType: 'application/json;charset=UTF-8',
+                    data: JSON.stringify(TrolleyModel),
+                    success: function () {
+                        alert("删除成功");
+                        show();
+                    },
+
+                });
+            }
+        });
+
+        $("#buyall").click(function () {
+            var TrolleyModel = {
+                ids: getids()
+            };
             $.ajax({
-                type:'post',
-                url:'trolley/removeTrolleyNu',
-                contentType:'application/json;charset=UTF-8',
-                data:'{"tid":"'+tid+'"}',
-                success: function(data){
+                type: "post",
+                url: "trolley/getcount",
+                contentType: 'application/json;charset=UTF-8',
+                data: JSON.stringify(TrolleyModel),
+                success: function (data) {
+                    var t=data.total;
+                    if (confirm("确认购买？" + String.fromCharCode(10) + "共" +t+"元")) {
+                        var TrolleyModel = {
+                            ids: getids()
+                        }
+                        $.ajax({
+                            type: "post",
+                            url: "trolley/delAll",
+                            contentType: 'application/json;charset=UTF-8',
+                            data: JSON.stringify(TrolleyModel),
+                            success: function () {
+                                alert("购买成功");
+                                show();
+                            },
+
+                        });
+                    }
+                },
+
+            });
+
+        });
+
+    });
+
+
+
+    function deltrolley() {
+        var tid = $("#tid").val();
+        if (confirm("真的要删除吗?")) {
+            $.ajax({
+                type: 'post',
+                url: 'trolley/removeTrolleyNu',
+                contentType: 'application/json;charset=UTF-8',
+                data: '{"tid":"' + tid + '"}',
+                success: function (data) {
                     alert("删除成功");
                     show();
                 }
             });
-  }
+        }
+    }
+
     function buytrolley() {
-        var tid =$("#tid").val();
-        var count= $("#count").text();
-        var text="共"+count+"元，确认购买？";
-        if(confirm(text)) {
+        var tid = $("#tid").val();
+        var count = $("#count").text();
+        var text = "确认购买？" + String.fromCharCode(10) + "共" + count;
+        if (confirm(text)) {
             $.ajax({
                 type: 'post',
                 url: 'trolley/removeTrolleyNu',
@@ -115,16 +196,19 @@
             });
         }
     }
+
 </script>
 <body class="gray-bg">
-<input type="hidden" value="${id}" id="sessionid" />
+<input type="hidden" value="${id}" id="sessionid"/>
 
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="row">
         <div class="col-sm-10 col-sm-offset-1 ">
-            <div class="ibox float-e-margins" >
-                <div class="ibox-title" >
-                    <h5>购物车 <small></small></h5>
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>购物车
+                        <small></small>
+                    </h5>
                     <div class="ibox-tools">
                         <a class="collapse-link">
                             <i class="fa fa-chevron-up"></i>
@@ -135,16 +219,19 @@
                     </div>
                 </div>
                 <div id="tros">
-            </div>
-                <div style="position: relative;left: 820px">
-                <input type="button"  class="btn btn-primary" style="margin:30px" value="删除"  onclick="deltrolley();">
-                <input type="button"  class="btn btn-primary" style="margin:30px" value="购买"  onclick="deltrolley();">
-            </div>
+                </div>
+
+                <div style="float:left;;position: relative;left: 715px">
+                    <input type="checkbox" id="ids" value=""
+                           style="position: relative;right:740px;top:3px;margin:30px;text-align: center">
+                    <span style="position: relative;right:740px;margin-top:30px">全选</span>
+                    <input type="button" class="btn btn-primary" style="margin:30px" value="删除" id="deleteall" >
+                    <input type="button" class="btn btn-primary" style="margin:30px" value="购买" id="buyall">
+                </div>
             </div>
         </div>
     </div>
 </div>
-
 
 
 <script src="js/jquery.min.js?v=2.1.4"></script>
@@ -160,139 +247,139 @@
 <script src="head/sitelogo.js"></script>
 <script src="head/html2canvas.min.js" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript">
-//    $(document).ready(function(){
-//        $(".i-checks").iCheck({
-//            checkboxClass:"icheckbox_square-green",
-//            radioClass:"iradio_square-green"
-//        });
-//
-//        var sessionId = $("#sessionid").val();
-//        alert(sessionId);
-//        $.ajax({
-//            url:'/userFind',
-//            data:{
-//                uid:$('#sessionid').val()
-//            },
-//            type:'POST',
-//            dataType: 'text',
-//            success:function(data){
-//                var obj = eval('(' + data + ')');
-//                alert(obj.usex);
-//                var uusex = obj.usex;
-//                var utime = null;
-//                if(obj.ubirthday == null){
-//                    utime = obj.ubirthday;
-//                }else {
-//                    utime = getMyDate(obj.ubirthday);
-//                }
-//                $("#uphone").attr("value",obj.uphone);
-//                $("#ubirthday").attr("value",utime);
-//                if(-1 < uusex.indexOf("M")){
-//                    alert("1");
-//                    $("#usex2").removeAttr("checked");
-//                    $("#usex1").attr("checked","value");
-//                }else if(-1 < uusex.indexOf("W")){
-//                    alert("2");
-//                    $("#usex1").removeAttr("checked");
-//                    $("#usex2").attr("checked","value");
-//                }else{
-//                    alert("3");
-//                    $("#usex1").removeAttr("checked");
-//                    $("#usex2").removeAttr("checked");
-//                }
-//            },
-//            error:function (err){
-//                alert(err);
-//                alert("1");
-//            }
-//        });
-//
-//        //修改——转换日期格式(时间戳转换为datetime格式)
-//        function getMyDate(str){
-//            var oDate = new Date(str),
-//                oYear = oDate.getFullYear(),
-//                oMonth = oDate.getMonth()+1,
-//                oDay = oDate.getDate(),
-//                oTime = oYear +'-'+ getzf(oMonth) +'-'+ getzf(oDay);//最后拼接时间
-//            return oTime;
-//        }
-//
-//        //补0操作
-//        function getzf(num){
-//            if(parseInt(num) < 10){
-//                num = '0'+num;
-//            }
-//            return num;
-//        }
-//
-//        $("#modifyform1").ajaxForm(function (data) {
-//            alert("1");
-//            $('form').bootstrapValidator({
-//                message: 'This value is not valid',
-//                feedbackIcons: {
-//                    valid: 'glyphicon glyphicon-ok',
-//                    invalid: 'glyphicon glyphicon-remove',
-//                    validating: 'glyphicon glyphicon-refresh'
-//                },
-//                fields: {
-//                    uname: {
-//                        message: '账户名验证失败',
-//                        validators: {
-//                            notEmpty: {
-//                                message: '账户名不能为空'
-//                            },
-//                            stringLength: {
-//                                min: 6,
-//                                max: 18,
-//                                message: '账户名长度必须在6到18位之间'
-//                            },
-//                            regexp: {
-//                                regexp: /^[a-zA-Z0-9_]+$/,
-//                                message: '账户名由字母、数字、下划线组成'
-//                            },
-//                            remote: {
-//                                message: '该账户名以被注册',
-//                                url: "checkModify",
-//                                type: 'post',
-//                                data: function (validator) {
-//                                    return {
-//                                        uname: $("#uname").val()
-//                                    };
-//                                },
-//                                delay: 1000
-//                            }
-//                        }
-//                    },
-//                    uphone: {
-//                        validators: {
-//                            regexp: {
-//                                regexp: /^1[3|5|8]{1}[0-9]{9}$/,
-//                                message: '请输入正确的手机号码'
-//                            }
-//                        }
-//                    }
-//                }
-//            });
-//
-//            if(-1 < data.indexOf("modify1")){
-//                $("#uname").removeAttr("disabled");
-//                $("#ubirthday").removeAttr("disabled");
-//                $("#uphone").removeAttr("disabled");
-//                $("#usex1").removeAttr("disabled");
-//                $("#usex2").removeAttr("disabled");
-//                $("#btnmodify").html('保存');
-//                $("#modifyform1").attr("action","/usermodify2");
-//            }else if(-1 < data.indexOf("modify2")){
-//                $("#uname").attr("disabled",true);
-//                $("#ubirthday").attr("disabled",true);
-//                $("#usex2").attr("disabled",true);
-//                $("#usex1").attr("disabled",true);
-//                $("#uphone").attr("disabled",true);
-//                $("#btnmodify").html('修改');
-//                $("#modifyform1").attr("action","/usermodify");
-//            }
-//        });
-//    });
+    //    $(document).ready(function(){
+    //        $(".i-checks").iCheck({
+    //            checkboxClass:"icheckbox_square-green",
+    //            radioClass:"iradio_square-green"
+    //        });
+    //
+    //        var sessionId = $("#sessionid").val();
+    //        alert(sessionId);
+    //        $.ajax({
+    //            url:'/userFind',
+    //            data:{
+    //                uid:$('#sessionid').val()
+    //            },
+    //            type:'POST',
+    //            dataType: 'text',
+    //            success:function(data){
+    //                var obj = eval('(' + data + ')');
+    //                alert(obj.usex);
+    //                var uusex = obj.usex;
+    //                var utime = null;
+    //                if(obj.ubirthday == null){
+    //                    utime = obj.ubirthday;
+    //                }else {
+    //                    utime = getMyDate(obj.ubirthday);
+    //                }
+    //                $("#uphone").attr("value",obj.uphone);
+    //                $("#ubirthday").attr("value",utime);
+    //                if(-1 < uusex.indexOf("M")){
+    //                    alert("1");
+    //                    $("#usex2").removeAttr("checked");
+    //                    $("#usex1").attr("checked","value");
+    //                }else if(-1 < uusex.indexOf("W")){
+    //                    alert("2");
+    //                    $("#usex1").removeAttr("checked");
+    //                    $("#usex2").attr("checked","value");
+    //                }else{
+    //                    alert("3");
+    //                    $("#usex1").removeAttr("checked");
+    //                    $("#usex2").removeAttr("checked");
+    //                }
+    //            },
+    //            error:function (err){
+    //                alert(err);
+    //                alert("1");
+    //            }
+    //        });
+    //
+    //        //修改——转换日期格式(时间戳转换为datetime格式)
+    //        function getMyDate(str){
+    //            var oDate = new Date(str),
+    //                oYear = oDate.getFullYear(),
+    //                oMonth = oDate.getMonth()+1,
+    //                oDay = oDate.getDate(),
+    //                oTime = oYear +'-'+ getzf(oMonth) +'-'+ getzf(oDay);//最后拼接时间
+    //            return oTime;
+    //        }
+    //
+    //        //补0操作
+    //        function getzf(num){
+    //            if(parseInt(num) < 10){
+    //                num = '0'+num;
+    //            }
+    //            return num;
+    //        }
+    //
+    //        $("#modifyform1").ajaxForm(function (data) {
+    //            alert("1");
+    //            $('form').bootstrapValidator({
+    //                message: 'This value is not valid',
+    //                feedbackIcons: {
+    //                    valid: 'glyphicon glyphicon-ok',
+    //                    invalid: 'glyphicon glyphicon-remove',
+    //                    validating: 'glyphicon glyphicon-refresh'
+    //                },
+    //                fields: {
+    //                    uname: {
+    //                        message: '账户名验证失败',
+    //                        validators: {
+    //                            notEmpty: {
+    //                                message: '账户名不能为空'
+    //                            },
+    //                            stringLength: {
+    //                                min: 6,
+    //                                max: 18,
+    //                                message: '账户名长度必须在6到18位之间'
+    //                            },
+    //                            regexp: {
+    //                                regexp: /^[a-zA-Z0-9_]+$/,
+    //                                message: '账户名由字母、数字、下划线组成'
+    //                            },
+    //                            remote: {
+    //                                message: '该账户名以被注册',
+    //                                url: "checkModify",
+    //                                type: 'post',
+    //                                data: function (validator) {
+    //                                    return {
+    //                                        uname: $("#uname").val()
+    //                                    };
+    //                                },
+    //                                delay: 1000
+    //                            }
+    //                        }
+    //                    },
+    //                    uphone: {
+    //                        validators: {
+    //                            regexp: {
+    //                                regexp: /^1[3|5|8]{1}[0-9]{9}$/,
+    //                                message: '请输入正确的手机号码'
+    //                            }
+    //                        }
+    //                    }
+    //                }
+    //            });
+    //
+    //            if(-1 < data.indexOf("modify1")){
+    //                $("#uname").removeAttr("disabled");
+    //                $("#ubirthday").removeAttr("disabled");
+    //                $("#uphone").removeAttr("disabled");
+    //                $("#usex1").removeAttr("disabled");
+    //                $("#usex2").removeAttr("disabled");
+    //                $("#btnmodify").html('保存');
+    //                $("#modifyform1").attr("action","/usermodify2");
+    //            }else if(-1 < data.indexOf("modify2")){
+    //                $("#uname").attr("disabled",true);
+    //                $("#ubirthday").attr("disabled",true);
+    //                $("#usex2").attr("disabled",true);
+    //                $("#usex1").attr("disabled",true);
+    //                $("#uphone").attr("disabled",true);
+    //                $("#btnmodify").html('修改');
+    //                $("#modifyform1").attr("action","/usermodify");
+    //            }
+    //        });
+    //    });
 </script>
 <script type="text/javascript" src="http://tajs.qq.com/stats?sId=9051096" charset="UTF-8"></script>
 </body>
