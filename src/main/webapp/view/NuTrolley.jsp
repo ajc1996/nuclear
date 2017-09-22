@@ -46,7 +46,7 @@
                         "            <div  style=\"width: 800px;height:120px; \">\n" +
                         "            <div class=\"form-group\" style=\"width: 100px;height:100px;margin-top:10px;margin-left: 20px;\">\n" +
                         "            <div  style=\"width: 100px;height:100px;\">\n" +
-                        "            <img src=\"Items.gpic\" style=\"width: 100px;height:100px;\">\n" +
+                        "            <img src=\""+Items.gpic+"\" style=\"width: 100px;height:100px;\">\n" +
                         "            </div>\n" +
                         "            </div>\n" +
                         "\n" +
@@ -63,16 +63,16 @@
                         "        </div>\n" +
                         "        <div class=\"form-group\" style=\" float:left; margin-left: 640px;margin-top: -115px;width:100px;height:100px;line-height: 100px;\">\n" +
                         "\n" +
-                        "            <span>金额：</span><span id='count'>" + Items.gprice * Items.tcount + "元\n</span>" +
+                        "            <span>金额：</span><span id='count"+index+"'>" + Items.gprice * Items.tcount + "元\n</span>" +
                         "        </div>\n" +
                         "        <div class=\"form-group\" style=\" float:left;border-radius: 50%;  margin-left: 830px;margin-top: -115px;width:50px;height:20px;line-height: 100px;\">\n" +
-                        "            <input type=\"button\"  class=\"btn btn-primary\" value=\"删除\"  onclick=\"deltrolley();\">\n" +
+                        "            <input type=\"button\"  class=\"btn btn-primary\" value=\"删除\"  onclick=\"deltrolley("+index+");\">\n" +
                         "            </div>\n" +
                         "        <div class=\"form-group\" style=\" float:left;border-radius: 50%; margin-left: 950px;margin-top: -115px;width:50px;height:20px;line-height: 100px;\">\n" +
-                        "            <input type=\"button\"  class=\"btn btn-primary\" value=\"购买\"  onclick=\"buytrolley();\">\n" +
+                        "            <input type=\"button\"  class=\"btn btn-primary\" value=\"购买\"  onclick=\"buytrolley("+index+");\">\n" +
                         "            </div>\n" +
                         "        <div class=\"form-group\" style=\" position:relative;right:960px;top: 5px;float:left;border-radius: 50%; margin-left: 950px;margin-top: -115px;width:50px;height:20px;line-height: 100px;\">\n" +
-                        "            <input type=\"checkbox\" class =\"tid\" id =\"tid\" name=\"tid\" value=\"" + Items.tid + "\">\n" +
+                        "            <input type=\"checkbox\" class =\"tid\" id =\""+index+"\" name=\"tid\" value=\"" + Items.tid + "\">\n" +
                         "            </div>\n" +
                         "            </div>\n" +
                         "            </div>\n" +
@@ -163,8 +163,8 @@
 
 
 
-    function deltrolley() {
-        var tid = $("#tid").val();
+    function deltrolley(index) {
+        var tid = $("#"+index).val();
         if (confirm("真的要删除吗?")) {
             $.ajax({
                 type: 'post',
@@ -179,9 +179,16 @@
         }
     }
 
-    function buytrolley() {
-        var tid = $("#tid").val();
-        var count = $("#count").text();
+//    $(document).on("click",".btn-primary",function () {
+//        alert("1");
+//        var src = $(this).attr('value');
+//        alert()
+//
+//    });
+
+    function buytrolley(index) {
+        var tid = $("#"+index).val();
+        var count = $("#count"+index+"").text();
         var text = "确认购买？" + String.fromCharCode(10) + "共" + count;
         if (confirm(text)) {
             $.ajax({

@@ -164,9 +164,8 @@
 
         if (pageCount == 1) {     // 当只有一页时
             for (var j = 0; j < dataCount; j++) {
-                var e="<li><a id=\"data2[j].gpic\" class=\"modalbtn\"><img src=\""+data2[j].gpic+"\" class=\"text-align\:center\"></a><p><span>"+data2[j].gname+"</span></p><p><span>"+data2[j].gname+"</span></p></li>";
+                var e="<li><a><img class=\"modalbtn\" src=\""+data2[j].gpic+"\" class=\"text-align\:center\"></a><p><span>"+data2[j].gname+"</span></p><p><span>"+data2[j].gname+"</span></p></li>";
                 ul.append(e);
-                $("#data2[j].gpic").addClass("modalbtn");
             }
         }else {      // 当超过一页时
             var e="";
