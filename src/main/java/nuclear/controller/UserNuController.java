@@ -164,6 +164,10 @@ public class UserNuController {
         return userNuService.selectByManage(offset,limits,uname);
     }
 
+    /**
+     * 删除
+     * @param deleteModel
+     */
     @RequestMapping("/delete")
     public void userdelete(@RequestBody DeleteModel deleteModel){
         //   String []data =request.getParameterValues("names");

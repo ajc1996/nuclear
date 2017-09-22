@@ -1,8 +1,10 @@
 package nuclear.service.impl;
 
 import nuclear.dao.GoodsNuMapper;
+import nuclear.dao.TrolleyNuMapper;
 import nuclear.model.GoodsNu;
 import nuclear.model.GoodsNuExample;
+import nuclear.model.TrolleyNu;
 import nuclear.service.GoodsNuService;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +21,9 @@ public class GoodsNuServiceImpl implements GoodsNuService {
 
     @Resource
     GoodsNuExample goodsNuExample;
+
+    @Resource
+    TrolleyNuMapper trolleyNuMapper;
 
     /**
      * 插入数据
@@ -133,5 +138,29 @@ public class GoodsNuServiceImpl implements GoodsNuService {
         }
         System.out.println("zzzzz");
         return rows;
+    }
+
+    /**
+     * 根据gpic查询
+     * @param gpic
+     * @return
+     */
+    @Override
+    public List<GoodsNu> selectByGpic(String gpic) {
+        goodsNuExample.clear();
+        goodsNuExample.createCriteria().andGpicEqualTo(gpic);
+        List<GoodsNu> rows = goodsNuMapper.selectByExample(goodsNuExample);
+        return rows;
+    }
+
+    /**
+     * 插入购物车
+     * @param trolleyNu
+     * @return
+     */
+    @Override
+    public String addTrolley(TrolleyNu trolleyNu) {
+        trolleyNuMapper.insert(trolleyNu);
+        return "success";
     }
 }

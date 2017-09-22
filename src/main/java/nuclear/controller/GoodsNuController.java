@@ -2,6 +2,7 @@ package nuclear.controller;
 
 import nuclear.model.DeleteModel;
 import nuclear.model.GoodsNu;
+import nuclear.model.TrolleyNu;
 import nuclear.service.GoodsNuService;
 import nuclear.util.Base64;
 import org.springframework.stereotype.Controller;
@@ -145,7 +146,6 @@ public class GoodsNuController {
 
     /**
      * 根据名字查询
-     * @param goodsNu
      * @param gname
      * @return
      */
@@ -155,6 +155,31 @@ public class GoodsNuController {
         System.out.println(gname);
         System.out.println("查询");
         return goodsNuService.selectByGname(gname);
+    }
+
+    /**
+     * 通过图片地址查询
+     * @param gpic
+     * @param response
+     * @return
+     */
+    @RequestMapping("selectByGpic")
+    @ResponseBody
+    public List<GoodsNu> selectByGpic(String gpic,HttpServletResponse response){
+        System.out.println(gpic);
+        return goodsNuService.selectByGpic(gpic);
+    }
+
+    /**
+     * 将购物信息插入数据库
+     * @param trolleyNu
+     * @return
+     */
+    @RequestMapping("addTrolley")
+    @ResponseBody
+    public String addTrolley(TrolleyNu trolleyNu){
+        trolleyNu.setTcount(1);
+        return goodsNuService.addTrolley(trolleyNu);
     }
 
 }

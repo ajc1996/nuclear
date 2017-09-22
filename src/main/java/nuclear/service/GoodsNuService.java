@@ -1,6 +1,7 @@
 package nuclear.service;
 
 import nuclear.model.GoodsNu;
+import nuclear.model.TrolleyNu;
 
 import java.util.List;
 import java.util.Map;
@@ -53,5 +54,20 @@ public interface GoodsNuService {
      * @return
      */
     List<GoodsNu> selectByGname(String gname);
+
+    /**
+     * 根据图片地址加载
+     * @param gpic
+     * @return
+     */
+    List<GoodsNu> selectByGpic(String gpic);
+
+    /**
+     * 添加购物信息
+     * @param trolleyNu
+     * @return
+     */
+    String addTrolley(TrolleyNu trolleyNu);
+
 
 }
