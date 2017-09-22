@@ -24,6 +24,7 @@
     </script>
 </head>
 <body>
+    <input type="hidden" id="id" value="${id}">
     <div class="topbar">
         <div class=" shop_title">核动力商城</div>
         <div class="container">
